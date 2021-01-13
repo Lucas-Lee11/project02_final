@@ -1,4 +1,4 @@
-# TMP README: Proposal
+#TMP README: Proposal
 
 Names: Jeremy Ku-Benjet, Lucas Lee
 
@@ -27,6 +27,8 @@ During a frame, an sequence of inputs ("begin" to "finish") would be read from t
 The processor will then pipe the entites to the renderer. This could be done through first writting a number which signifies the amount of entities and then send that amount of entities. The camera entity would always be sent first. The processsor would than send any other data it needs (like commands asking for special visual effects or asking the drawer to die). These would likely be integers and wrapped the same way as how the reader sent information.
 
 The drawer will read these entities and for each entity in the order they appear (unless we decide to make some priority system) read the assosiated sprite and write it to the screen in the desiganted area (given by position relative to the camera). The drawer would then display the frame.
+
+Alternatively, instead of pipes, we might use a shared linked list between the drawer and the processor. This would require us to have two linked lists in the processor, one of entities on screen and one for entities off screen.
 
 The data structures (outside of those provided by SDL) would not be much more than simple structs. We might end up using a linked list as well. Algorithm wise, except for what was described above, a sorting algorithm might be used to sort entities in terms of a special priority. Either a quick-sort or a merge sort would be used for their efficiency and relative simplicity. IF we find there are few sprites using an insertion sort could be efffective as well. We will use vairious algorithms related to geometry like intersection of two lines, though some of these are closer to formulas than algorithms. I don't think we will end up implementing many, if any, advanced algorithms or data structures for this project.
 

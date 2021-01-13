@@ -6,6 +6,7 @@
 #define PLAYER_IMG_PATH "./player.bmp"
 #define PLAYER_HEIGHT 50
 #define PLAYER_WIDTH 50
+#define PLAYER_SPEED 3
 
 struct player{
     float x;

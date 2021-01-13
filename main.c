@@ -43,13 +43,21 @@ int main(int argc, const char **argv) {
         // Process events
         while(SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT) running = false;
+            if(event.type == SDL_KEYDOWN){
+                const char *key = SDL_GetKeyName(event.key.keysym.sym);
+                //move back and forth using A and D
+                if(strcmp(key, "A") == 0) player->dx -= PLAYER_SPEED;
+                if(strcmp(key, "D") == 0) player->dx += PLAYER_SPEED;
+            }
         }
 
+        //Wipe the previous screen
         SDL_RenderClear(renderer);
 
         render_player(renderer, player);
 
 
+        //Present updated render
         SDL_RenderPresent(renderer);
     }
 

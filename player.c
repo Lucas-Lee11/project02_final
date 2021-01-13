@@ -44,6 +44,13 @@ Returns 0 on success, -1 on failure
 */
 
 int render_player(SDL_Renderer * renderer, struct player * player){
+    //Update player location
+    player->x += player->dx;
+    player->y += player->dy;
+
+    player->dx = 0;
+    player->dy = 0;
+
     //creates a rectangle to render based on player location and size
     SDL_Rect dstrect = {player->x, player->y, player->height, player->width};
 

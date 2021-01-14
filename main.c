@@ -42,7 +42,10 @@ int main(int argc, const char **argv) {
     while(running) {
         // Process events
         while(SDL_PollEvent(&event)) {
-            if(event.type == SDL_QUIT) running = false;
+            if(event.type == SDL_QUIT) {
+                running = false;
+            }
+
             if(event.type == SDL_KEYDOWN){
                 const char *key = SDL_GetKeyName(event.key.keysym.sym);
                 //move back and forth using A and D

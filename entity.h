@@ -4,8 +4,10 @@
 #define ENTITY_H_
 
 //action states
-#define GROUNDED 1
-#define AIRBORN 2
+enum {
+    GROUNDED = 1,
+    AIRBORN = 2
+};
 
 struct entity {
     //x and y positions

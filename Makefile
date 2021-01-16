@@ -9,7 +9,7 @@ else
 	SDL_LINK_FLAGS=-L/usr/local/Cellar/sdl2/2.0.14_1/lib -lSDL2
 endif
 
-CMPNTS = main.o player.o entity.o
+CMPNTS = main.o player.o entity.o input.o
 
 all: prgrm
 
@@ -24,6 +24,10 @@ player.o: player.c player.h
 
 entity.o: entity.c entity.h
 	$(CC) -c entity.c $(SDL_HEADER_FLAGS)
+
+#doesn't need sdl things, just sets up pipe stuff 
+input.o: input.c input.h
+	$(CC) -c input.c
 
 .PHONY: run clean
 

@@ -5,6 +5,7 @@ ifeq ($(USE_SDL_CONFIG),y)
 	SDL_LINK_FLAGS=`sdl2-config --libs`
 	SDL_HEADER_FLAGS=`sdl2-config --cflags`
 else 
+	#or whatever you want these to be
 	SDL_HEADER_FLAGS=-I/usr/local/Cellar/sdl2/2.0.14_1/include
 	SDL_LINK_FLAGS=-L/usr/local/Cellar/sdl2/2.0.14_1/lib -lSDL2
 endif

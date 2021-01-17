@@ -48,6 +48,7 @@ int main(int argc, const char **argv) {
 
             if(event.type == SDL_KEYDOWN){
                 const char *key = SDL_GetKeyName(event.key.keysym.sym);
+                printf("keycode: %s\n", key);
                 //move back and forth using A and D
                 if(strcmp(key, "A") == 0) player->dx -= PLAYER_SPEED;
                 if(strcmp(key, "D") == 0) player->dx += PLAYER_SPEED;
@@ -55,6 +56,7 @@ int main(int argc, const char **argv) {
         }
 
         //Wipe the previous screen
+        printf("rendering...\n");
         SDL_RenderClear(renderer);
 
         render_player(renderer, player);
@@ -62,6 +64,9 @@ int main(int argc, const char **argv) {
 
         //Present updated render
         SDL_RenderPresent(renderer);
+
+        //add a slight delay between frames
+        SDL_Delay(50);
     }
 
     // Release resources

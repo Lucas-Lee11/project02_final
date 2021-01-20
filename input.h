@@ -6,13 +6,13 @@
 //estblishing input code constants
 enum {
     //begins and ends input sequences
-    END = 0,
-    BEGIN = 1,
+    END,
+    BEGIN,
     //constants for various input codes
-    P_UP = 2,
-    P_DOWN = 3,
-    P_LEFT = 4,
-    P_RIGHT = 5
+    P_UP,
+    P_DOWN,
+    P_LEFT,
+    P_RIGHT
 };
 
 int init_processer_connection(int * fd, const char * wkp);

@@ -12,8 +12,14 @@ enum {
     P_UP,
     P_DOWN,
     P_LEFT,
-    P_RIGHT
+    P_RIGHT,
+
+    //terminate the program
+    TERMINATE
 };
+
+//maximum allowed keys you can send at once
+enum {MAX_KEYS_AT_ONCE = 16};
 
 int init_processer_connection(int * fd, const char * wkp);
 int establish_processer_connection(int * fd, const char * wkp);

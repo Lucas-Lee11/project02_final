@@ -81,13 +81,12 @@ int establish_connection(int * fd, const char * wkp) {
 }
 
 /*
- * Sends formatted input codes to the given pipe
+ * Sends formatted input codes to the given pipe NOTE DOESN'T CHECK FOR TOO MANY INPUT CODES
  * Returns: void
 */
 
 void send_input(int fd, const int * input_codes) {
-    int b = BEGIN, e = END;
-    write(fd, &b, sizeof(int));
+    int e = END;
     write(fd, input_codes, sizeof(input_codes));
     write(fd, &e, sizeof(int));
 }

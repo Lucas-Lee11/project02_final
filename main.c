@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 
 #include "player.h"
+#include "stage.h"
 
 
 int main(int argc, const char **argv) {
@@ -17,7 +18,7 @@ int main(int argc, const char **argv) {
     }
     // Create an SDL window
     SDL_Window *window = SDL_CreateWindow("Final Project", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        620, 480,
+        WINDOW_WIDTH, WINDOW_HEIGHT,
         SDL_WINDOW_OPENGL
     );
     if(window == NULL){
@@ -26,7 +27,10 @@ int main(int argc, const char **argv) {
     }
 
     // Create a renderer (accelerated and in sync with the display refresh rate)
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    SDL_Renderer *renderer = SDL_CreateRenderer(window,
+        -1,
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+    );
     if(renderer == NULL){
         printf( "Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );
         exit(-1);
@@ -36,6 +40,7 @@ int main(int argc, const char **argv) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
     struct player * player = init_player(renderer);
+    struct stage * stage = init_stage("./level1.dat");
 
     bool running = true;
     SDL_Event event;
@@ -55,10 +60,14 @@ int main(int argc, const char **argv) {
             }
         }
 
+        SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
+
         //Wipe the previous screen
-        printf("rendering...\n");
         SDL_RenderClear(renderer);
 
+
+
+        render_stage(renderer, stage);
         render_player(renderer, player);
 
 
@@ -71,6 +80,7 @@ int main(int argc, const char **argv) {
 
     // Release resources
     free_player(player);
+    free_stage(stage);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

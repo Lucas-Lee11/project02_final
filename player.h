@@ -19,7 +19,6 @@ struct player{
     int width;
 
     int onGround;
-    SDL_Texture *texture;
 };
 
 struct player * init_player(SDL_Renderer * renderer);

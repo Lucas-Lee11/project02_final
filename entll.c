@@ -11,6 +11,7 @@ struct entll * init_entll() {
     out = malloc(sizeof(struct entll));
 
     out->next = NULL;
+    out->prev = NULL;
 
     return out;
 }

@@ -6,6 +6,7 @@
 struct entll {
     struct entity ent;
     struct entll * next;
+    struct entll * prev;
 };
 
 struct entll * init_entll();

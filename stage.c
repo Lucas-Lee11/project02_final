@@ -24,7 +24,7 @@ struct stage * init_stage(char * filename){
 
     load_tiles(stage, filename);
 
-    stage->player = init_entity(PLAYER_IMG_PATH);
+    stage->player = init_entity(1, PLAYER_HEIGHT, PLAYER_WIDTH);
 
     SDL_Point cam = {0,0};
     stage->camera = cam;
@@ -61,7 +61,7 @@ int load_tiles(struct stage * stage, char * filename){
 Renders the stage
 Returns 1 on success, -1 on failure
 */
-int render_stage (SDL_Renderer * renderer, struct stage * stage){
+int render_stage (SDL_Renderer * renderer, struct stage * stage, SDL_Texture * player_tex){
 
     update_camera(stage);
 
@@ -70,7 +70,7 @@ int render_stage (SDL_Renderer * renderer, struct stage * stage){
     SDL_RenderClear(renderer);
 
     render_tiles(renderer, stage);
-    render_entity(renderer, stage->player);
+    render_entity(renderer, player_tex, stage->player);
 
     //Present updated render
     SDL_RenderPresent(renderer);
@@ -148,7 +148,7 @@ Frees the stage struct
 Returns a NULL pointer
 */
 struct stage * free_stage(struct stage * stage){
-    free(stage->player);
+    free_entity(stage->player);
     free(stage);
 
     return NULL;

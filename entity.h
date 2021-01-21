@@ -1,5 +1,3 @@
-#include <SDL2/SDL.h>
-
 #ifndef ENTITY_H_
 #define ENTITY_H_
 
@@ -17,6 +15,9 @@ enum {
 //
 
 struct entity {
+    //ID, should be unique
+    int id;
+
     //x and y positions
     double x;
     double y;
@@ -44,18 +45,14 @@ struct entity {
     //GROUNDED = 1;
     //AIRBORN = 2
     int action_state;
-
-    //current texture to render
-    SDL_Texture * tex;
-    //const char * sprite_path;
 };
 
-struct entity * init_entity(const char * sprite_path, SDL_Renderer * renderer) {
+struct entity * init_entity(const int id, const int height, const int width);
 struct entity * free_entity(struct entity * ent);
 //currently this just takes and entity, but it may take more in the future to consider surrounding entities
 void update_world_values(struct entity * ent);
 void update_position(struct entity * ent);
 
-int render_entity(SDL_Renderer * renderer, struct entity * ent);
+int render_entity(SDL_Renderer * renderer, SDL_Texture * tex, struct entity * ent);
 
 #endif

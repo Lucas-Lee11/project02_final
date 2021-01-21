@@ -36,6 +36,27 @@ int main(int argc, const char **argv) {
         exit(-1);
     }
 
+    //load in player texture
+    SDL_Surface * player_surf = SDL_LoadBMP(PLAYER_IMG_PATH);
+    if(player_surf == NULL) {
+        fprintf(stderr, "Error loading sprite file: %s\n", SDL_GetError());
+
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+    SDL_Texture * player_tex = SDL_CreateTextureFromSurface(renderer, player_surf);
+    if(player_tex == NULL) {
+        fprintf(stderr, "Error loading sprite file: %s\n", SDL_GetError());
+
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_FreeSurface(player_surf);
+        SDL_Quit();
+        return 1;
+    }
+
     // Initial renderer color
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
@@ -63,7 +84,7 @@ int main(int argc, const char **argv) {
 
 
 
-        render_stage(renderer, stage);
+        render_stage(renderer, stage, player_tex);
 
     }
 

@@ -33,7 +33,7 @@ struct stage{
 
 struct stage * init_stage(char * filename);
 int load_tiles(struct stage * stage, char * filename);
-int render_stage (SDL_Renderer * renderer, struct stage * stage);
+int render_stage (SDL_Renderer * renderer, struct stage * stage, SDL_Texture * player_tex);
 int render_tiles(SDL_Renderer * renderer, struct stage * stage);
 int update_camera (struct stage * stage);
 struct stage * free_stage(struct stage * stage);

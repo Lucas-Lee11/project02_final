@@ -100,6 +100,8 @@ int main() {
                     break;
             }
         }
+        //50 ms delay which is needed for some reason
+        SDL_Delay(50);
     }
 
     //terminate the program

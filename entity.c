@@ -8,7 +8,7 @@
  * Allocates and creates entity struct. The sprite path is a bmp file. Initializes all fields to 0
  * Returns: pointer to the created struct or NULL on failier
 */
-struct entity * init_entity(const char * sprite_path) {
+struct entity * init_entity(const char * sprite_path, SDL_Renderer * renderer) {
     struct entity * ent = malloc(sizeof(struct entity));
 
     ent->height = PLAYER_HEIGHT;
@@ -22,7 +22,10 @@ struct entity * init_entity(const char * sprite_path) {
     ent->y_acc = 0;
 
 
-    ent->sprite_path = sprite_path;
+    SDL_Surface * surf = SDL_LoadBMP(sprite_path);
+    ent->tex = SDL_CreateTextureFromSurface(renderer, surf);
+
+    SDL_FreeSurface(surf);
 
     return ent;
 }

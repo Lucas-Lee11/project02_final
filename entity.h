@@ -14,6 +14,8 @@ enum {
     AIRBORN = 2
 };
 
+//
+
 struct entity {
     //x and y positions
     double x;
@@ -41,13 +43,14 @@ struct entity {
     //gives the current "state" of the character. Are they grounded? Are they Airborn? Anything else?
     //GROUNDED = 1;
     //AIRBORN = 2
-    char action_state;
+    int action_state;
 
-    const char * sprite_path;
-
+    //current texture to render
+    SDL_Texture * tex;
+    //const char * sprite_path;
 };
 
-struct entity * init_entity(const char * sprite_path);
+struct entity * init_entity(const char * sprite_path, SDL_Renderer * renderer) {
 struct entity * free_entity(struct entity * ent);
 //currently this just takes and entity, but it may take more in the future to consider surrounding entities
 void update_world_values(struct entity * ent);

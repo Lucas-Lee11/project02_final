@@ -1,4 +1,4 @@
-#TMP README: Proposal
+# Project Icarus
 
 Names: Jeremy Ku-Benjet, Lucas Lee
 
@@ -52,8 +52,8 @@ Concept Summary:
 
 ## Timeline
 - [x] Proposal 1/11
-- [ ] Entity struct 1/13
-- [ ] Basic rendering of sprite 1/15
-- [ ] User input, placeholder processor 1/19
+- [x] Entity struct 1/13
+- [x] Basic rendering of sprite 1/15
+- [x] User input, placeholder processor 1/19
 - [ ] Processor finished 1/21
 - [ ] Levels and bug testing 1/25

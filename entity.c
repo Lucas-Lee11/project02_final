@@ -8,11 +8,11 @@
  * Allocates and creates entity struct. The sprite path is a bmp file. Initializes all fields to 0
  * Returns: pointer to the created struct or NULL on failier
 */
-struct entity * init_entity(SDL_Renderer * renderer, const char * sprite_path) {
+struct entity * init_entity(const char * sprite_path) {
     struct entity * ent = malloc(sizeof(struct entity));
 
-    ent->height = 0;
-    ent->width = 0;
+    ent->height = PLAYER_HEIGHT;
+    ent->width = PLAYER_WIDTH;
 
     ent->x = 0;
     ent->y = 0;
@@ -21,26 +21,8 @@ struct entity * init_entity(SDL_Renderer * renderer, const char * sprite_path) {
     ent->x_acc = 0;
     ent->y_acc = 0;
 
-    //creates texture from the sprite file
-    SDL_Surface * surf = SDL_LoadBMP(sprite_path);
-    if(surf == NULL) {
-        fprintf(stderr, "Error Loading Sprite File: %s\n", SDL_GetError());
 
-        free(ent);
-        //free_entity(ent); not needed 
-        return NULL;
-    }
-
-    ent->texture = SDL_CreateTextureFromSurface(renderer, surf);
-    if(ent->texture == NULL) {
-        fprintf(stderr, "Error Creating Texture From Surface: %s\n", SDL_GetError());
-
-        SDL_FreeSurface(surf);
-        free(ent);
-        return NULL;
-    }
-
-    SDL_FreeSurface(surf);
+    ent->sprite_path = sprite_path;
 
     return ent;
 }
@@ -50,7 +32,6 @@ struct entity * init_entity(SDL_Renderer * renderer, const char * sprite_path) {
  * Returns: null pointer
 */
 struct entity * free_entity(struct entity * ent) {
-    SDL_DestroyTexture(ent->texture);
     free(ent);
 
     return NULL;
@@ -73,9 +54,36 @@ void update_position(struct entity * ent) {
  * Renderes an entity
  * Returns: 0 on success or -1 on failier
 */
-int render_entity(SDL_Renderer * renderer, const struct entity * ent) {
+int render_entity(SDL_Renderer * renderer, struct entity * ent) {
+
+
+    //creates texture from the sprite file
+    SDL_Surface * surf = SDL_LoadBMP(ent->sprite_path);
+    if(surf == NULL) {
+        fprintf(stderr, "Error Loading Sprite File: %s\n", SDL_GetError());
+
+        free(ent);
+        //free_entity(ent); not needed
+        return -1;
+    }
+
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surf);
+    if(texture == NULL) {
+        fprintf(stderr, "Error Creating Texture From Surface: %s\n", SDL_GetError());
+
+        SDL_FreeSurface(surf);
+        free(ent);
+        return -1;
+    }
+
+    SDL_FreeSurface(surf);
+
+
     //creates a rectangle for where to render based on location and size
     SDL_Rect dstrect = {ent->x, ent->y, ent->height, ent->width};
 
-    return SDL_RenderCopy(renderer, ent->texture, NULL, &dstrect);
+    int out = SDL_RenderCopy(renderer, texture, NULL, &dstrect);
+    SDL_DestroyTexture(texture);
+
+    return out;
 }

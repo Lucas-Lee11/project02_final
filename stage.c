@@ -10,15 +10,8 @@
 
 #include "stage.h"
 
-/*
-Copies over new fd to original fd
-Returns a backup of the original fd
-*/
-int redirect_file_descriptor(int orignial_fd, int new_fd) {
-    int backup_fd = dup(orignial_fd);
-    dup2 (new_fd, orignial_fd);
-    return backup_fd;
-}
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
 
 
 /*
@@ -31,6 +24,11 @@ struct stage * init_stage(char * filename){
 
     load_tiles(stage, filename);
 
+    stage->player = init_entity(PLAYER_IMG_PATH);
+
+    SDL_Point cam = {0,0};
+    stage->camera = cam;
+
     return stage;
 
 }
@@ -42,31 +40,19 @@ Returns 1 on success, -1 on failure
 */
 int load_tiles(struct stage * stage, char * filename){
 
-    int fd = open(filename, O_RDONLY);
-    if(fd == -1) {
-        printf("Error: %d  %s\n",errno, strerror(errno));
-        return -1;
-    }
-
-    int dup_stdin = redirect_file_descriptor(STDIN_FILENO, fd);
+    FILE * fp = fopen(filename, "r");
 
     int x,y;
     char d[1];
 
-    printf("Reading data\n");
-
     for(y = 0; y < STAGE_HEIGHT; y++){
         for(x = 0; x < STAGE_WIDTH; x++){
-            scanf("%d", &(stage->data[x][y]));
-            //printf("%d ", stage->data[x][y]);
+            fscanf(fp, "%d", &(stage->data[x][y]));
         }
-        scanf("%c", d);
-        //printf("%c", *d);
-
+        fscanf(fp, "%c", d);
     }
 
-    dup2(STDIN_FILENO, dup_stdin);
-    close(fd);
+    fclose(fp);
 
     return 1;
 }
@@ -75,35 +61,85 @@ int load_tiles(struct stage * stage, char * filename){
 Renders the stage
 Returns 1 on success, -1 on failure
 */
-
 int render_stage (SDL_Renderer * renderer, struct stage * stage){
 
+    update_camera(stage);
+
+    //Wipe the previous screen
+    SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
+    SDL_RenderClear(renderer);
+
+    render_tiles(renderer, stage);
+    render_entity(renderer, stage->player);
+
+    //Present updated render
+    SDL_RenderPresent(renderer);
+
+    //add a slight delay between frames
+    SDL_Delay(50);
+
+    return 1;
+}
+
+int update_camera (struct stage * stage){
+    stage->camera.x = MIN(MAX(stage->camera.x, 0), (STAGE_WIDTH * TILE_SIZE) - WINDOW_WIDTH);
+	stage->camera.y = MIN(MAX(stage->camera.y, 0), (STAGE_HEIGHT * TILE_SIZE) - WINDOW_HEIGHT);
+
+    return 1;
+}
+
+int render_tiles(SDL_Renderer * renderer, struct stage * stage){
+    update_camera(stage);
+
+
+    int x_start = (stage->camera.x % TILE_SIZE) * -1;
+    int x_end = x_start + STAGE_RENDER_WIDTH * TILE_SIZE + (x_start == 0 ? 0 : TILE_SIZE);
+
+    int y_start = (stage->camera.y % TILE_SIZE) * -1;
+	int y_end = y_start + STAGE_RENDER_HEIGHT * TILE_SIZE + (y_start == 0 ? 0 : TILE_SIZE);
+
+    int map_x = stage->camera.x / TILE_SIZE;
+    int map_y = stage->camera.y / TILE_SIZE;
+
     int x,y;
+    for(y = y_start; y < y_end; y += TILE_SIZE){
+        for(x = x_start; x < x_end; x += TILE_SIZE){
 
-    for(y = 0; y < STAGE_HEIGHT; y++){
-        for(x = 0; x < STAGE_WIDTH; x++){
-            int n = stage->data[x][y] * 35;
+            if(map_x >= 0 && map_x < STAGE_WIDTH && map_y >= 0 && map_y < STAGE_HEIGHT){
 
-            if(n > 0){
-                int color[3];
-                color[0] = 0; color[1] = 0; color[2] = 0;
-                color[n%3] = n;
+                int n = stage->data[map_x][map_y] * 35;
 
-                SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], 255);
+                //printf("%d\t", n);
 
-                int nx = TILE_SIZE * x;
-                int ny = TILE_SIZE * y;
+                if(n > 0){
+                    int color[3];
+                    color[0] = 0; color[1] = 0; color[2] = 0;
+                    color[n%3] = n;
 
-                SDL_Rect dstrect = {nx, ny, TILE_SIZE, TILE_SIZE};
-                SDL_RenderFillRect(renderer, &dstrect);
+                    SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], 255);
+
+                    SDL_Rect dstrect = {x, y, TILE_SIZE, TILE_SIZE};
+                    SDL_RenderFillRect(renderer, &dstrect);
+
+                }
+
 
             }
+
+            map_x++;
+
+
         }
+
+        //printf("\n");
+        map_x = stage->camera.x / TILE_SIZE;
+        map_y++;
 
     }
 
-    return 1;
+    //printf("\n\n");
 
+    return 1;
 }
 
 
@@ -112,6 +148,7 @@ Frees the stage struct
 Returns a NULL pointer
 */
 struct stage * free_stage(struct stage * stage){
+    free(stage->player);
     free(stage);
 
     return NULL;

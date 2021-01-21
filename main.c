@@ -5,7 +5,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "player.h"
+#include "entity.h"
 #include "stage.h"
 
 
@@ -39,7 +39,6 @@ int main(int argc, const char **argv) {
     // Initial renderer color
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-    struct player * player = init_player(renderer);
     struct stage * stage = init_stage("./level1.dat");
 
     bool running = true;
@@ -53,33 +52,22 @@ int main(int argc, const char **argv) {
 
             if(event.type == SDL_KEYDOWN){
                 const char *key = SDL_GetKeyName(event.key.keysym.sym);
-                printf("keycode: %s\n", key);
+                //printf("keycode: %s\n", key);
                 //move back and forth using A and D
-                if(strcmp(key, "A") == 0) player->dx -= PLAYER_SPEED;
-                if(strcmp(key, "D") == 0) player->dx += PLAYER_SPEED;
+                if(strcmp(key, "A") == 0) stage->camera.x += -PLAYER_SPEED;
+                if(strcmp(key, "D") == 0) stage->camera.x += PLAYER_SPEED;
+                if(strcmp(key, "S") == 0) stage->camera.y += PLAYER_SPEED;
+                if(strcmp(key, "W") == 0) stage->camera.y += -PLAYER_SPEED;
             }
         }
-
-        SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
-
-        //Wipe the previous screen
-        SDL_RenderClear(renderer);
 
 
 
         render_stage(renderer, stage);
-        render_player(renderer, player);
 
-
-        //Present updated render
-        SDL_RenderPresent(renderer);
-
-        //add a slight delay between frames
-        SDL_Delay(50);
     }
 
     // Release resources
-    free_player(player);
     free_stage(stage);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

@@ -3,6 +3,11 @@
 #ifndef ENTITY_H_
 #define ENTITY_H_
 
+#define PLAYER_IMG_PATH "./player.bmp"
+#define PLAYER_HEIGHT 50
+#define PLAYER_WIDTH 50
+#define PLAYER_SPEED 3
+
 //action states
 enum {
     GROUNDED = 1,
@@ -20,7 +25,7 @@ struct entity {
     double x_acc;
     double y_acc;
 
-    //height and width in pixels 
+    //height and width in pixels
     int height;
     int width;
 
@@ -38,16 +43,16 @@ struct entity {
     //AIRBORN = 2
     char action_state;
 
-    //Texture For Rendering
-    SDL_Texture * texture;
+    const char * sprite_path;
 
 };
 
-struct entity * init_entity(SDL_Renderer * renderer, const char * sprite_path);
+struct entity * init_entity(const char * sprite_path);
 struct entity * free_entity(struct entity * ent);
 //currently this just takes and entity, but it may take more in the future to consider surrounding entities
 void update_world_values(struct entity * ent);
+void update_position(struct entity * ent);
 
-int render_entity(SDL_Renderer * renderer, const struct entity * ent);
+int render_entity(SDL_Renderer * renderer, struct entity * ent);
 
 #endif

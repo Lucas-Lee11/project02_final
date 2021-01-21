@@ -10,7 +10,7 @@ else
 	SDL_LINK_FLAGS=-L/usr/local/Cellar/sdl2/2.0.14_1/lib -lSDL2
 endif
 
-CMPNTS = main.o player.o entity.o input.o entll.o stage.o
+CMPNTS = main.o entity.o input.o entll.o stage.o
 
 all: prgrm
 
@@ -19,9 +19,6 @@ prgrm: $(CMPNTS)
 
 main.o: main.c
 	$(CC) -c main.c $(SDL_HEADER_FLAGS)
-
-player.o: player.c player.h
-	$(CC) -c player.c $(SDL_HEADER_FLAGS)
 
 entity.o: entity.c entity.h
 	$(CC) -c entity.c $(SDL_HEADER_FLAGS)

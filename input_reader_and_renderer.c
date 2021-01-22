@@ -2,6 +2,9 @@
 
 #include "input.h"
 
+#include <string.h>
+#include <errno.h>
+
 /*
  * convinece function for closing the file descriptor
  * Returns: void
@@ -32,8 +35,6 @@ int sdlk_to_housek(SDL_Keycode sdlk) {
             break;
     }
 }
-
-
 
 int main() {
     //establish connection to processer
@@ -77,6 +78,20 @@ int main() {
         return 1;
     }
 
+    //create shared memory for entities
+    int shmd = shmget(KEY, sizeof(struct entity) * MAX_ENTS, IPC_CREAT | 0640);
+    if(shmd == -1) {
+        fprintf(stderr, "Error creating shared memory: %s\n", strerror(errno));
+
+        close_fd(fd);
+        SDL_DestroyWindow(window), window = NULL;
+        SDL_DestroyRenderer(renderer);
+
+        return 1;
+    }
+    struct entity ** ents = shmat(shmd, 0, 0);
+
+
     bool running = true;
     SDL_Event event;
     while(running) {
@@ -102,9 +117,15 @@ int main() {
         }
         //50 ms delay which is needed for some reason
         SDL_Delay(50);
+
+        //TODO render the frame from the ents list
+
     }
 
     //terminate the program
+    shmdt(ents);
+    shmctl(shmd, IPC_RMID, 0);
+
     //sdl stuff
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

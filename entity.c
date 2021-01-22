@@ -22,6 +22,7 @@ struct entity * init_entity(const int id, const int height, const int width) {
     ent->y_acc = 0;
 
     ent->id = id;
+    ent->type = GENERIC;
 
     return ent;
 }

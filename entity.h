@@ -8,15 +8,23 @@
 
 //action states
 enum {
-    GROUNDED = 1,
-    AIRBORN = 2
+    GROUNDED,
+    AIRBORN
 };
 
-//
+//types
+enum {
+    GENERIC,
+    PLAYER,
+    BLOCK,
+    NUM_ENTITIES
+};
 
 struct entity {
     //ID, should be unique
     int id;
+    //type, gives some general information to be used by the updater function
+    int type;
 
     //x and y positions
     double x;

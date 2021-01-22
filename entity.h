@@ -63,6 +63,8 @@ struct entity * free_entity(struct entity * ent);
 void update_world_values(struct entity * ent);
 void update_position(struct entity * ent);
 
+void cp_entity(struct entity dest, const struct entity src);
+
 int render_entity(SDL_Renderer * renderer, SDL_Texture * tex, struct entity * ent);
 
 #endif

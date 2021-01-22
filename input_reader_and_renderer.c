@@ -89,7 +89,7 @@ int main() {
 
         return 1;
     }
-    struct entity ** ents = shmat(shmd, 0, 0);
+    struct entity * ents = shmat(shmd, 0, 0);
 
 
     bool running = true;

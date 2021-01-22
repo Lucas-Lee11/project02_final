@@ -1,5 +1,5 @@
 CC=gcc
-USE_SDL_CONFIG=n
+USE_SDL_CONFIG=y
 
 ifeq ($(USE_SDL_CONFIG),y)
 	SDL_LINK_FLAGS=`sdl2-config --libs`

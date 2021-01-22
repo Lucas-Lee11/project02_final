@@ -64,3 +64,26 @@ int render_entity(SDL_Renderer * renderer, SDL_Texture * tex,  struct entity * e
 
     return out;
 }
+
+/*
+ * copies entity from src to dest
+ * Retruns: void
+*/
+
+void cp_entity(struct entity dest, const struct entity src) {
+    dest->id = src->id;
+    dest->type = src->type;
+
+    dest->x = src->x;
+    dest->y = src->y;
+    dest->x_vel = src->x_vel;
+    dest->y_vel = src->y_vel;
+    dest->x_acc = src->x_acc;
+    dest->y_acc = src->y_acc;
+
+    dest->height = src->height;
+    dest->width = src->width;
+
+    dest->collision = src->collision;
+    dest->action_state = src->action_state;
+}

@@ -24,7 +24,7 @@ int main() {
 
         return 1;
     }
-    struct entity ** ents = shmat(shmd, 0, 0);
+    struct entity * ents = shmat(shmd, 0, 0);
 
     struct entity unloaded = init_entll();
     struct entity loaded = init_entll();
@@ -75,7 +75,7 @@ int main() {
         int i;
         struct entll * out_ent
         for(i = 0; i < MAX_ENTS && out_ent; i++) {
-            ents[i] = out_ent->ent;
+            cp_entity(ents[i], out_ent->ent);
             out_ent = out_ent->next;
         }
         ents[MIN(i,MAX_ENTS)] = NULL;

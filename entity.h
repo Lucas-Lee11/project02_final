@@ -1,3 +1,5 @@
+#include <SDL2/SDL.h>
+
 #ifndef ENTITY_H_
 #define ENTITY_H_
 

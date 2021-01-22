@@ -18,9 +18,6 @@ enum {
     TERMINATE
 };
 
-//maximum allowed keys you can send at once
-enum {MAX_KEYS_AT_ONCE = 16};
-
 int init_processer_connection(int * fd, const char * wkp);
 int establish_processer_connection(int * fd, const char * wkp);
 

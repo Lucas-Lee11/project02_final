@@ -38,7 +38,7 @@ struct entity * init_entity(const int height, const int width) {
     ent->x_acc = 0;
     ent->y_acc = 0;
 
-    ent->type = GENERIC;
+    ent->type = NULL_ENT;
 
     return ent;
 }

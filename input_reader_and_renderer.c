@@ -1,6 +1,12 @@
 #include <SDL2/SDL.h>
 
 #include "input.h"
+#include "simulator.h"
+
+#include <sys/ipc.h>
+#include <sys/shm.h>
+
+#include <unistd.h>
 
 #include <string.h>
 #include <errno.h>
@@ -12,9 +18,9 @@
 
 void close_fd(int * fd) {
     close(fd[0]);
-    fd[0] = NULL;
+    fd[0] = 0;
     close(fd[1]);
-    fd[1] = NULL;
+    fd[1] = 0;
 }
 
 /*
@@ -30,7 +36,7 @@ int sdlk_to_housek(SDL_Keycode sdlk) {
         case SDLK_d:
             return P_RIGHT;
             break;
-        case default:
+        default:
             return -1;
             break;
     }
@@ -40,7 +46,7 @@ int main() {
     //establish connection to processer
     int fd[2];
     if(init_processer_connection(fd, WELL_KNOWN_PIPE) != 0) {
-        fprintf("Error connecing to simulator!\n");
+        fprintf(stderr, "Error connecing to simulator!\n");
 
         //should be fine just to return here
         return 1;
@@ -58,7 +64,7 @@ int main() {
     window = SDL_CreateWindow("this is a window", 
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
             640, 480,
-            SDL_WINDWO_OPENGL
+            SDL_WINDOW_OPENGL
             );
     if(window == NULL) {
         printf("Error creating window: %s\n", SDL_GetError());
@@ -92,7 +98,7 @@ int main() {
     struct entity * ents = shmat(shmd, 0, 0);
 
 
-    bool running = true;
+    char running = 1;
     SDL_Event event;
     while(running) {
         //process events
@@ -100,18 +106,19 @@ int main() {
             switch(event.type) {
                 //quitting the game
                 case SDL_QUIT:
-                    running = false;
+                    running = 0;
                     break;
 
                 //a key is pressed
                 case SDL_KEYDOWN:
-                    int house_key = sdlk_to_housek(event.key.keysym.sym);
+                    ;
+                    const int house_key = sdlk_to_housek(event.key.keysym.sym);
                     if(house_key != -1) {
-                        send_input(fd[0], house_key);
+                        send_input(fd[0], &house_key);
                     }
                     break;
 
-                case default:
+                default:
                     break;
             }
         }

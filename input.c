@@ -45,7 +45,7 @@ int init_processer_connection(int * fd, const char * wkp) {
  * Returns: 0 on success else -1
 */
 
-int establish_connection(int * fd, const char * wkp) {
+int establish_processer_connection(int * fd, const char * wkp) {
     //handshake
     fd[0] = open(wkp, O_WRONLY);
     if(fd[0] == -1) {
@@ -81,7 +81,7 @@ int establish_connection(int * fd, const char * wkp) {
 }
 
 /*
- * Sends formatted input codes to the given pipe NOTE DOESN'T CHECK FOR TOO MANY INPUT CODES
+ * Sends formatted input codes to the given pipe 
  * Returns: void
 */
 

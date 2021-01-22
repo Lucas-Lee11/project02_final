@@ -16,6 +16,7 @@ enum {
 
 //types
 enum {
+    NULL_ENT,
     GENERIC,
     PLAYER,
     BLOCK,

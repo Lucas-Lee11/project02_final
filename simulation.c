@@ -73,9 +73,9 @@ int main() {
 
         //shared memory list stuff
         int i;
-        struct entll * out_ent
+        struct entll * out_ent = loaded;
         for(i = 0; i < MAX_ENTS && out_ent; i++) {
-            cp_entity(ents[i], out_ent->ent);
+            cp_entity(&ents[i], out_ent->ent);
             out_ent = out_ent->next;
         }
         ents[MIN(i,MAX_ENTS)] = NULL;

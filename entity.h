@@ -57,13 +57,13 @@ struct entity {
     int action_state;
 };
 
-struct entity * init_entity(const int id, const int height, const int width);
+struct entity * init_entity(const int height, const int width);
 struct entity * free_entity(struct entity * ent);
 //currently this just takes and entity, but it may take more in the future to consider surrounding entities
 void update_world_values(struct entity * ent);
 void update_position(struct entity * ent);
 
-void cp_entity(struct entity dest, const struct entity src);
+void cp_entity(struct entity * dest, const struct entity * src);
 
 int render_entity(SDL_Renderer * renderer, SDL_Texture * tex, struct entity * ent);
 

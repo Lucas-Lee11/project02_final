@@ -2,14 +2,31 @@
 
 #include <stdio.h>
 
+#include <fcntl.h>
+#include <unistd.h>
+
+#include <errno.h>
+#include <string.h>
+
 #include "entity.h"
 
 /*
  * Allocates and creates entity struct. The sprite path is a bmp file. Initializes all fields to 0
  * Returns: pointer to the created struct or NULL on failier
 */
-struct entity * init_entity(const int id, const int height, const int width) {
+struct entity * init_entity(const int height, const int width) {
     struct entity * ent = malloc(sizeof(struct entity));
+
+    int fd = open("/dev/urandom", O_RDONLY);
+    if(fd == -1) {
+        fprintf(stderr, "Error opening /dev/urandom: %s\n", strerror(errno));
+
+        free(ent);
+
+        return NULL;
+    }
+
+    read(fd, &(ent->id), sizeof(ent->id));
 
     ent->height = height;
     ent->width = width;
@@ -21,7 +38,6 @@ struct entity * init_entity(const int id, const int height, const int width) {
     ent->x_acc = 0;
     ent->y_acc = 0;
 
-    ent->id = id;
     ent->type = GENERIC;
 
     return ent;
@@ -70,7 +86,7 @@ int render_entity(SDL_Renderer * renderer, SDL_Texture * tex,  struct entity * e
  * Retruns: void
 */
 
-void cp_entity(struct entity dest, const struct entity src) {
+void cp_entity(struct entity * dest, const struct entity * src) {
     dest->id = src->id;
     dest->type = src->type;
 

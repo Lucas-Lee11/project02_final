@@ -24,7 +24,7 @@ struct stage * init_stage(char * filename){
 
     load_tiles(stage, filename);
 
-    stage->player = init_entity(1, PLAYER_HEIGHT, PLAYER_WIDTH);
+    stage->player = init_entity(PLAYER_HEIGHT, PLAYER_WIDTH);
 
     SDL_Point cam = {0,0};
     stage->camera = cam;

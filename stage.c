@@ -28,6 +28,10 @@ struct stage * init_stage(SDL_Renderer * renderer, char * filename, struct entit
     camera->type = CAMERA;
     ents[0] = *camera;
 
+    struct entity * player = init_entity(PLAYER_HEIGHT, PLAYER_WIDTH);
+    player->type = PLAYER;
+    ents[1] = *player;
+
     printf("Setup ent_arr\n");
 
     load_tiles(stage, filename);
@@ -46,7 +50,7 @@ int load_tiles(struct stage * stage, char * filename){
 
     FILE * fp = fopen(filename, "r");
 
-    int x,y, i = 1;
+    int x,y, i = 2;
     char d[1];
     int buf[1];
 
@@ -106,12 +110,19 @@ int render_stage (SDL_Renderer * renderer, struct stage * stage){
     SDL_RenderPresent(renderer);
 
     //add a slight delay between frames
-    SDL_Delay(50);
+    //SDL_Delay(50);
 
     return 1;
 }
 
 void update_camera (struct entity * camera){
+
+    struct entity * player = camera;
+    player++;
+
+    camera->x = player->x - (WINDOW_WIDTH) / 2;
+    camera->y = player->y - (WINDOW_HEIGHT) / 2;
+
     camera->x = MIN(MAX(camera->x, 0), (STAGE_WIDTH * TILE_SIZE) - WINDOW_WIDTH);
 	camera->y = MIN(MAX(camera->y, 0), (STAGE_HEIGHT * TILE_SIZE) - WINDOW_HEIGHT);
 }

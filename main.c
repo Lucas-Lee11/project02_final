@@ -47,6 +47,8 @@ int main(int argc, const char **argv) {
     SDL_Event event;
     while(running) {
         // Process events
+
+
         while(SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT) {
                 running = false;
@@ -56,10 +58,10 @@ int main(int argc, const char **argv) {
                 const char *key = SDL_GetKeyName(event.key.keysym.sym);
                 //printf("keycode: %s\n", key);
                 //move back and forth using A and D
-                if(strcmp(key, "A") == 0) stage->ent_arr[0].x += -PLAYER_SPEED;
-                if(strcmp(key, "D") == 0) stage->ent_arr[0].x += PLAYER_SPEED;
-                if(strcmp(key, "S") == 0) stage->ent_arr[0].y += PLAYER_SPEED;
-                if(strcmp(key, "W") == 0) stage->ent_arr[0].y += -PLAYER_SPEED;
+                if(strcmp(key, "A") == 0) stage->ent_arr[1].x += -PLAYER_SPEED;
+                if(strcmp(key, "D") == 0) stage->ent_arr[1].x += PLAYER_SPEED;
+                if(strcmp(key, "S") == 0) stage->ent_arr[1].y += PLAYER_SPEED;
+                if(strcmp(key, "W") == 0) stage->ent_arr[1].y += -PLAYER_SPEED;
             }
         }
 

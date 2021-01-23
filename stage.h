@@ -5,19 +5,20 @@
 #ifndef STAGE_H
 #define STAGE_H
 
-//In tiles
-#define STAGE_WIDTH 40
-#define STAGE_HEIGHT 20
-
-#define STAGE_RENDER_WIDTH 20
-#define STAGE_RENDER_HEIGHT 12
-
 //In pixels
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
-
 #define TILE_SIZE 64
+
+//In tiles
+#define STAGE_WIDTH 40
+#define STAGE_HEIGHT 20
+
+#define STAGE_RENDER_WIDTH WINDOW_WIDTH / TILE_SIZE + 1
+#define STAGE_RENDER_HEIGHT WINDOW_HEIGHT / TILE_SIZE + 1
+
+
 
 
 struct stage{

@@ -169,7 +169,7 @@ int render_tiles(SDL_Renderer * renderer, struct stage * stage){
 */
 
 /*
-Frees the stage struct
+Frees the stage struct and shared memory list
 Returns a NULL pointer
 */
 struct stage * free_stage(struct stage * stage){

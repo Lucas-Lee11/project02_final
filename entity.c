@@ -41,6 +41,8 @@ struct entity * init_entity(const int height, const int width) {
 
     ent->type = NULL_ENT;
 
+    close(fd);
+
     return ent;
 }
 

@@ -12,18 +12,6 @@
 #include <errno.h>
 
 /*
- * convinece function for closing the file descriptor
- * Returns: void
-*/
-
-void close_fd(int * fd) {
-    close(fd[0]);
-    fd[0] = 0;
-    close(fd[1]);
-    fd[1] = 0;
-}
-
-/*
  * convinence function, takes the SDK_Keycode and turns it into our local input keycode
  * Returns: int representing the keycode and if there is no corrospondance -1
 */
@@ -43,11 +31,27 @@ int sdlk_to_housek(SDL_Keycode sdlk) {
 }
 
 int main() {
+
+    //create shared memory for entities
+    int shmd = shmget(KEY, sizeof(struct entity) * MAX_ENTS, IPC_CREAT | 0640);
+
+    printf("shmd: %d\n", shmd);
+
+    if(shmd == -1) {
+        fprintf(stderr, "Error creating shared memory: %s\n", strerror(errno));
+
+        return 1;
+    }
+    const struct entity * ents = shmat(shmd, 0, 0);
+
+
     //establish connection to processer
     int fd[2];
     if(init_processer_connection(fd, WELL_KNOWN_PIPE) != 0) {
         fprintf(stderr, "Error connecing to simulator!\n");
 
+        shmdt(ents);
+        shmctl(shmd, IPC_RMID, 0);
         //should be fine just to return here
         return 1;
     }
@@ -56,6 +60,10 @@ int main() {
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
 
+        shmdt(ents);
+        shmctl(shmd, IPC_RMID, 0);
+
+        close(fd[0]), close(fd[1]);
         return 1;
     }
 
@@ -69,7 +77,10 @@ int main() {
     if(window == NULL) {
         printf("Error creating window: %s\n", SDL_GetError());
 
-        close_fd(fd);
+        shmdt(ents);
+        shmctl(shmd, IPC_RMID, 0);
+
+        close(fd[0]), close(fd[1]);
         return 1;
     }
 
@@ -79,24 +90,17 @@ int main() {
     if(renderer == NULL) {
         printf("Error creating renderer: %s\n", SDL_GetError());
 
-        close_fd(fd);
         SDL_DestroyWindow(window), window = NULL;
+
+        shmdt(ents);
+        shmctl(shmd, IPC_RMID, 0);
+
+        close(fd[0]), close(fd[1]);
+
         return 1;
     }
 
-    //create shared memory for entities
-    int shmd = shmget(KEY, sizeof(struct entity) * MAX_ENTS, IPC_CREAT | 0640);
-    if(shmd == -1) {
-        fprintf(stderr, "Error creating shared memory: %s\n", strerror(errno));
-
-        close_fd(fd);
-        SDL_DestroyWindow(window), window = NULL;
-        SDL_DestroyRenderer(renderer);
-
-        return 1;
-    }
-    struct entity * ents = shmat(shmd, 0, 0);
-
+    
 
     char running = 1;
     SDL_Event event;
@@ -107,6 +111,8 @@ int main() {
                 //quitting the game
                 case SDL_QUIT:
                     running = 0;
+                    const int term = TERMINATE;
+                    send_input(fd[0], &term);
                     break;
 
                 //a key is pressed
@@ -139,7 +145,7 @@ int main() {
     SDL_Quit();
 
     //close pipes
-    close_fd(fd);
+    close(fd[0]), close(fd[1]);
 
     return 0;
 }

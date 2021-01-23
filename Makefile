@@ -11,7 +11,7 @@ else
 endif
 
 #what does each of the things need to compile
-TEST_CMPNTS = stage.o main.o entity.o entll.o
+TEST_CMPNTS = stage.o main.o entity.o entll.o simulator.o
 
 INPUT_READER_RENDERER_CMPNTS = entity.o stage.o input.o entll.o simulator.o input_reader_and_renderer.o
 
@@ -37,7 +37,7 @@ main.o: main.c
 entity.o: entity.c entity.h
 	$(CC) -c entity.c $(SDL_HEADER_FLAGS)
 
-stage.o: stage.c stage.h
+stage.o: stage.c stage.h 
 	$(CC) -c stage.c $(SDL_HEADER_FLAGS)
 
 input_reader_and_renderer.o: input_reader_and_renderer.c input.h

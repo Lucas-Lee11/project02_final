@@ -87,6 +87,8 @@ Returns 1 on success, -1 on failure
 */
 int render_stage (SDL_Renderer * renderer, struct stage * stage){
 
+    update_camera(&(stage->ent_arr[0]));
+
     //Wipe the previous screen
     SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
     SDL_RenderClear(renderer);

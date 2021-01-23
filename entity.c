@@ -79,6 +79,12 @@ int render_entity(SDL_Renderer * renderer, struct stage * stage, struct entity *
 
     int out;
 
+    double cam_x = stage->ent_arr[0].x;
+    double cam_y = stage->ent_arr[0].y;
+
+    int rel_x = (int) (ent->x - cam_x);
+    int rel_y = (int) (ent->y - cam_y);
+
     if(ent->type == PLAYER){
         SDL_Surface * surf = SDL_LoadBMP(PLAYER_IMG_PATH);
         if(surf == NULL) {
@@ -102,17 +108,15 @@ int render_entity(SDL_Renderer * renderer, struct stage * stage, struct entity *
 
 
         //creates a rectangle for where to render based on location and size
-        SDL_Rect dstrect = {ent->x, ent->y, ent->height, ent->width};
+        SDL_Rect dstrect = {rel_x, rel_y, ent->height, ent->width};
 
         out = SDL_RenderCopy(renderer, texture, NULL, &dstrect);
         SDL_DestroyTexture(texture);
     }
     else if(ent->type == TILE){
-        int x = (int) ent->x;
-        int y = (int) ent->y;
-        int n = stage->data[x/TILE_SIZE][y/TILE_SIZE] * 35;
+        int n = stage->data[(int)ent->x/TILE_SIZE][(int)ent->y/TILE_SIZE] * 35;
 
-        if(n > 0 && x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT){
+        if(n > 0){
             //printf("%d %d %d\n", y ,x, n);
             int color[3];
             color[0] = 0; color[1] = 0; color[2] = 0;
@@ -121,7 +125,7 @@ int render_entity(SDL_Renderer * renderer, struct stage * stage, struct entity *
             SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], 255);
 
             //printf("%d %d\n",x ,y );
-            SDL_Rect dstrect = {x, y, TILE_SIZE, TILE_SIZE};
+            SDL_Rect dstrect = {rel_x, rel_y, TILE_SIZE, TILE_SIZE};
             out = SDL_RenderFillRect(renderer, &dstrect);
 
         }

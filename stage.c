@@ -18,17 +18,21 @@
 Creates a new stage struct
 Returns a pointer to the new struct
 */
-struct stage * init_stage(char * filename){
+struct stage * init_stage(SDL_Renderer * renderer, char * filename, struct entity * ents){
 
     struct stage * stage = malloc(sizeof(struct stage));
 
+    stage->ent_arr = ents;
+
+    struct entity * camera = init_entity(0,0);
+    camera->type = CAMERA;
+    ents[0] = *camera;
+
+    printf("Setup ent_arr\n");
+
     load_tiles(stage, filename);
 
-    stage->player = init_entity(PLAYER_HEIGHT, PLAYER_WIDTH);
-
-    SDL_Point cam = {0,0};
-    stage->camera = cam;
-
+    printf("Done setting up stage\n");
     return stage;
 
 }
@@ -42,17 +46,37 @@ int load_tiles(struct stage * stage, char * filename){
 
     FILE * fp = fopen(filename, "r");
 
-    int x,y;
+    int x,y, i = 1;
     char d[1];
+    int buf[1];
 
     for(y = 0; y < STAGE_HEIGHT; y++){
         for(x = 0; x < STAGE_WIDTH; x++){
-            fscanf(fp, "%d", &(stage->data[x][y]));
+            fscanf(fp, "%d", buf);
+
+            printf("%d ", buf[0]);
+            stage->data[x][y] = buf[0];
+
+            if(buf[0] > 0){
+                struct entity * tile = init_entity(TILE_SIZE, TILE_SIZE);
+                tile->type = TILE;
+                tile->x = x * TILE_SIZE;
+                tile->y = y * TILE_SIZE;
+
+                stage->ent_arr[i++] = *tile;
+            }
         }
         fscanf(fp, "%c", d);
+        printf("\n");
     }
 
     fclose(fp);
+
+    struct entity * null = init_entity(0, 0);
+    null->type = NULL_ENT;
+    stage->ent_arr[i] = *null;
+
+    printf("Done loading\n");
 
     return 1;
 }
@@ -61,16 +85,20 @@ int load_tiles(struct stage * stage, char * filename){
 Renders the stage
 Returns 1 on success, -1 on failure
 */
-int render_stage (SDL_Renderer * renderer, struct stage * stage, SDL_Texture * player_tex){
-
-    update_camera(stage);
+int render_stage (SDL_Renderer * renderer, struct stage * stage){
 
     //Wipe the previous screen
     SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
     SDL_RenderClear(renderer);
 
-    render_tiles(renderer, stage);
-    render_entity(renderer, player_tex, stage->player);
+    struct entity * ent = stage->ent_arr;
+    while(ent->type != NULL_ENT){
+        //printf("Rendering entity\n");
+        render_entity(renderer, stage, ent);
+
+        ent++;
+    }
+
 
     //Present updated render
     SDL_RenderPresent(renderer);
@@ -81,16 +109,13 @@ int render_stage (SDL_Renderer * renderer, struct stage * stage, SDL_Texture * p
     return 1;
 }
 
-int update_camera (struct stage * stage){
-    stage->camera.x = MIN(MAX(stage->camera.x, 0), (STAGE_WIDTH * TILE_SIZE) - WINDOW_WIDTH);
-	stage->camera.y = MIN(MAX(stage->camera.y, 0), (STAGE_HEIGHT * TILE_SIZE) - WINDOW_HEIGHT);
-
-    return 1;
+void update_camera (struct entity * camera){
+    camera->x = MIN(MAX(camera->x, 0), (STAGE_WIDTH * TILE_SIZE) - WINDOW_WIDTH);
+	camera->y = MIN(MAX(camera->y, 0), (STAGE_HEIGHT * TILE_SIZE) - WINDOW_HEIGHT);
 }
 
+/*
 int render_tiles(SDL_Renderer * renderer, struct stage * stage){
-    update_camera(stage);
-
 
     int x_start = (stage->camera.x % TILE_SIZE) * -1;
     int x_end = x_start + STAGE_RENDER_WIDTH * TILE_SIZE + (x_start == 0 ? 0 : TILE_SIZE);
@@ -141,14 +166,21 @@ int render_tiles(SDL_Renderer * renderer, struct stage * stage){
 
     return 1;
 }
-
+*/
 
 /*
 Frees the stage struct
 Returns a NULL pointer
 */
 struct stage * free_stage(struct stage * stage){
-    free_entity(stage->player);
+
+    struct entity * ent = stage->ent_arr;
+    while(ent->type != NULL_ENT){
+        free_entity(ent);
+        ent++;
+    }
+    free_entity(ent);
+
     free(stage);
 
     return NULL;

@@ -7,7 +7,7 @@
 
 #include "entity.h"
 #include "stage.h"
-
+#include "simulator.h"
 
 int main(int argc, const char **argv) {
 
@@ -36,31 +36,12 @@ int main(int argc, const char **argv) {
         exit(-1);
     }
 
-    //load in player texture
-    SDL_Surface * player_surf = SDL_LoadBMP(PLAYER_IMG_PATH);
-    if(player_surf == NULL) {
-        fprintf(stderr, "Error loading sprite file: %s\n", SDL_GetError());
-
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
-    SDL_Texture * player_tex = SDL_CreateTextureFromSurface(renderer, player_surf);
-    if(player_tex == NULL) {
-        fprintf(stderr, "Error loading sprite file: %s\n", SDL_GetError());
-
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_FreeSurface(player_surf);
-        SDL_Quit();
-        return 1;
-    }
-
     // Initial renderer color
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-    struct stage * stage = init_stage("./level1.dat");
+    struct entity ent_arr[MAX_ENTS];
+    printf("size: %lu\n", sizeof(ent_arr));
+    struct stage * stage = init_stage(renderer, "./level1.dat", ent_arr);
 
     bool running = true;
     SDL_Event event;
@@ -75,16 +56,16 @@ int main(int argc, const char **argv) {
                 const char *key = SDL_GetKeyName(event.key.keysym.sym);
                 //printf("keycode: %s\n", key);
                 //move back and forth using A and D
-                if(strcmp(key, "A") == 0) stage->camera.x += -PLAYER_SPEED;
-                if(strcmp(key, "D") == 0) stage->camera.x += PLAYER_SPEED;
-                if(strcmp(key, "S") == 0) stage->camera.y += PLAYER_SPEED;
-                if(strcmp(key, "W") == 0) stage->camera.y += -PLAYER_SPEED;
+                if(strcmp(key, "A") == 0) stage->ent_arr[0].x += -PLAYER_SPEED;
+                if(strcmp(key, "D") == 0) stage->ent_arr[0].x += PLAYER_SPEED;
+                if(strcmp(key, "S") == 0) stage->ent_arr[0].y += PLAYER_SPEED;
+                if(strcmp(key, "W") == 0) stage->ent_arr[0].y += -PLAYER_SPEED;
             }
         }
 
 
 
-        render_stage(renderer, stage, player_tex);
+        render_stage(renderer, stage);
 
     }
 

@@ -8,6 +8,8 @@
 #define PLAYER_WIDTH 50
 #define PLAYER_SPEED 3
 
+#include "stage.h"
+
 //action states
 enum {
     GROUNDED,
@@ -17,9 +19,10 @@ enum {
 //types
 enum {
     NULL_ENT,
+    CAMERA,
     GENERIC,
     PLAYER,
-    BLOCK,
+    TILE,
     NUM_ENTITIES
 };
 
@@ -66,6 +69,6 @@ void update_position(struct entity * ent);
 
 void cp_entity(struct entity * dest, const struct entity * src);
 
-int render_entity(SDL_Renderer * renderer, SDL_Texture * tex, struct entity * ent);
+int render_entity(SDL_Renderer * renderer, struct stage * stage, struct entity * ent);
 
 #endif

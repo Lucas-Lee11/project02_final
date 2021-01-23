@@ -10,6 +10,7 @@
 
 #include "entity.h"
 
+
 /*
  * Allocates and creates entity struct. The sprite path is a bmp file. Initializes all fields to 0
  * Returns: pointer to the created struct or NULL on failier
@@ -72,11 +73,58 @@ void update_position(struct entity * ent) {
  * Returns: 0 on success or -1 on failier
 */
 
-int render_entity(SDL_Renderer * renderer, SDL_Texture * tex,  struct entity * ent) {
-    //creates a rectangle for where to render based on location and size
-    SDL_Rect dstrect = {ent->x, ent->y, ent->height, ent->width};
+int render_entity(SDL_Renderer * renderer, struct stage * stage, struct entity * ent) {
 
-    int out = SDL_RenderCopy(renderer, tex, NULL, &dstrect);
+    int out;
+
+    if(ent->type == PLAYER){
+        SDL_Surface * surf = SDL_LoadBMP(PLAYER_IMG_PATH);
+        if(surf == NULL) {
+            fprintf(stderr, "Error Loading Sprite File: %s\n", SDL_GetError());
+
+            free(ent);
+            //free_entity(ent); not needed
+            return -1;
+        }
+
+        SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surf);
+        if(texture == NULL) {
+            fprintf(stderr, "Error Creating Texture From Surface: %s\n", SDL_GetError());
+
+            SDL_FreeSurface(surf);
+            free(ent);
+            return -1;
+        }
+
+        SDL_FreeSurface(surf);
+
+
+        //creates a rectangle for where to render based on location and size
+        SDL_Rect dstrect = {ent->x, ent->y, ent->height, ent->width};
+
+        out = SDL_RenderCopy(renderer, texture, NULL, &dstrect);
+        SDL_DestroyTexture(texture);
+    }
+    else if(ent->type == TILE){
+        int x = (int) ent->x;
+        int y = (int) ent->y;
+        int n = stage->data[x/TILE_SIZE][y/TILE_SIZE] * 35;
+
+        if(n > 0 && x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT){
+            //printf("%d %d %d\n", y ,x, n);
+            int color[3];
+            color[0] = 0; color[1] = 0; color[2] = 0;
+            color[n%3] = n;
+
+            SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], 255);
+
+            //printf("%d %d\n",x ,y );
+            SDL_Rect dstrect = {x, y, TILE_SIZE, TILE_SIZE};
+            out = SDL_RenderFillRect(renderer, &dstrect);
+
+        }
+
+    }
 
     return out;
 }

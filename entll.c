@@ -1,5 +1,6 @@
 #include "entll.h"
 #include "entity.h"
+#include "stage.h"
 
 /*
  * Makes a linked list node

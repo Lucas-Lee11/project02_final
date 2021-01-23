@@ -1,6 +1,5 @@
 #include <SDL2/SDL.h>
 
-#include "entll.h"
 #include "entity.h"
 
 #ifndef STAGE_H
@@ -24,18 +23,15 @@
 struct stage{
     int data[STAGE_WIDTH][STAGE_HEIGHT];
 
-    struct entll * entll;
-    struct entity * player;
-
-    SDL_Point camera;
+    struct entity * ent_arr;
 
 };
 
-struct stage * init_stage(char * filename);
+struct stage * init_stage(SDL_Renderer * renderer, char * filename, struct entity * ents);
 int load_tiles(struct stage * stage, char * filename);
-int render_stage (SDL_Renderer * renderer, struct stage * stage, SDL_Texture * player_tex);
-int render_tiles(SDL_Renderer * renderer, struct stage * stage);
-int update_camera (struct stage * stage);
+int render_stage (SDL_Renderer * renderer, struct stage * stage);
+//int render_tiles(SDL_Renderer * renderer, struct stage * stage);
+void update_camera (struct entity * camera);
 struct stage * free_stage(struct stage * stage);
 
 #endif

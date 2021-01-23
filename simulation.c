@@ -3,6 +3,7 @@
 #include "simulator.h"
 #include "entll.h"
 #include "entity.h"
+#include "stage.h"
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -38,11 +39,19 @@ int main() {
     }
     struct entity * ents = shmat(shmd, 0, 0);
 
-    struct entll * unloaded = init_entll();
-    struct entll * loaded = init_entll();
+    //creating a null entity
+    struct entity * null_ent = init_entity(0,0);
+    null_ent->type - NULL_ENT;
 
-    //brain is on the fizzle. this is where we will finish taking input and setting up shared memeory which the renderer can read from and render the entities in there.
+    struct entll * unloaded = init_entll(null_ent);
+    struct entll * loaded = init_entll(null_ent);
 
+    free_entity(null_ent);
+
+    //loading tiles
+    loaded = load_tiles(loaded, STAGE_HEIGHT, STAGE_WIDTH, TILE_SIZE, TEST_LEVEL_PATH);
+
+    //run game
     char running = 1;
     int gamestate = 0;
 
@@ -73,7 +82,7 @@ int main() {
             cur_ent = loaded;
             while(cur_ent) {
                 //process cur_ent
-                //update_ent(cur_ent, loaded, unloaded, gamestate, keycode);
+                update_ent(cur_ent, loaded, unloaded, gamestate, keycode);
 
                 cur_ent = cur_ent->next;
             }
@@ -90,6 +99,7 @@ int main() {
         }
 
         struct entity * null_ent = init_entity(0,0);
+        null_ent->type = NULL_ENT;
         cp_entity(&ents[MIN(i,MAX_ENTS)], null_ent);
     }
 

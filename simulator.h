@@ -18,4 +18,10 @@ void update_ent(struct entll * ent,
         int gamestate, int input_key
         );
 
+//loading tiles from a file
+struct entll * load_tiles(struct entll * dest, 
+        const int height, const int width, const int tile_size, 
+        const char * level_path
+        );
+
 #endif

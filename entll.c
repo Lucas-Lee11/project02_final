@@ -7,12 +7,14 @@
  * Returns: a pointer to said linked list node
 */
 
-struct entll * init_entll() {
+struct entll * init_entll(const struct entity * initial_ent) {
     struct entll * out;
     out = malloc(sizeof(struct entll));
 
     out->next = NULL;
     out->prev = NULL;
+
+    cp_entity(&(out->ent),initial_ent);
 
     return out;
 }
@@ -23,7 +25,6 @@ struct entll * init_entll() {
 */
 
 struct entll * destroy_entll(struct entll * to_free) {
-    free_entity(&(to_free->ent));
     free(to_free);
 
     return NULL;
@@ -45,3 +46,18 @@ struct entll * destroy_entll_children(struct entll * to_free) {
     }
     return NULL;
 }
+
+/*
+ * pushes an entity node to the front of the linked list NOTE THE ENT IS COPIED, NOTE ACTUALLY USED
+ * Returns: a pointer to the front of the linked list
+ */
+
+struct entll * push(struct entll * dest, const struct entity * ent) {
+    struct entll * nhead = init_entll(ent);
+
+    dest->prev = nhead;
+    nhead->next = dest;
+
+    return nhead;
+}
+

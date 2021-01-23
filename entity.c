@@ -39,7 +39,7 @@ struct entity * init_entity(const int height, const int width) {
     ent->x_acc = 0;
     ent->y_acc = 0;
 
-    ent->type = NULL_ENT;
+    ent->type = GENERIC;
 
     close(fd);
 
@@ -70,10 +70,13 @@ void update_position(struct entity * ent) {
     ent->y += ent->y_vel;
 }
 
+//FIXME add in a slightly better spot oppoosed to entity where it might not fit
 /*
+
+
  * Renderes an entity
  * Returns: 0 on success or -1 on failier
-*/
+ 
 
 int render_entity(SDL_Renderer * renderer, struct stage * stage, struct entity * ent) {
 
@@ -134,6 +137,7 @@ int render_entity(SDL_Renderer * renderer, struct stage * stage, struct entity *
 
     return out;
 }
+*/
 
 /*
  * copies entity from src to dest
@@ -157,3 +161,5 @@ void cp_entity(struct entity * dest, const struct entity * src) {
     dest->collision = src->collision;
     dest->action_state = src->action_state;
 }
+
+

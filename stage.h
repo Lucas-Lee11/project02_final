@@ -18,9 +18,11 @@
 #define STAGE_RENDER_WIDTH WINDOW_WIDTH / TILE_SIZE + 1
 #define STAGE_RENDER_HEIGHT WINDOW_HEIGHT / TILE_SIZE + 1
 
+#define TEST_LEVEL_PATH "./level1.dat"
 
 
 
+/*
 struct stage{
     int data[STAGE_WIDTH][STAGE_HEIGHT];
 
@@ -34,5 +36,6 @@ int render_stage (SDL_Renderer * renderer, struct stage * stage);
 //int render_tiles(SDL_Renderer * renderer, struct stage * stage);
 void update_camera (struct entity * camera);
 struct stage * free_stage(struct stage * stage);
+*/
 
 #endif

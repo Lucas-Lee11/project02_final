@@ -13,12 +13,12 @@ endif
 #what does each of the things need to compile
 TEST_CMPNTS = stage.o main.o entity.o entll.o simulator.o
 
-INPUT_READER_RENDERER_CMPNTS = entity.o stage.o input.o entll.o simulator.o input_reader_and_renderer.o
+INPUT_READER_RENDERER_CMPNTS = entity.o input.o entll.o simulator.o input_reader_and_renderer.o
 
-SIMULATION_CMPNTS = entity.o stage.o input.o entll.o simulator.o  simulation.o
+SIMULATION_CMPNTS = entity.o input.o entll.o simulator.o  simulation.o
 
 #here is everything to compile
-all: test input_reader_renderer simulation
+all: input_reader_renderer simulation
 
 #all the different copiled processes
 input_reader_renderer: $(INPUT_READER_RENDERER_CMPNTS)
@@ -51,7 +51,7 @@ input.o: input.c input.h
 entll.o: entll.c entll.h
 	$(CC) -c entll.c
 
-simlation.o: simulation.c simulator.h input.h
+simlation.o: simulation.c simulator.h input.h stage.h
 	$(CC) -c simlation.c
 
 simlator.o: simulator.c simulator.h input.h

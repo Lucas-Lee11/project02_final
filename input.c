@@ -25,17 +25,17 @@ int init_processer_connection(int * fd, const char * wkp) {
     }
 
     //not going to error catch this, shouldn't be needed
-    fd[0] = open(wkp, O_RDONLY);
+    fd[1] = open(wkp, O_RDONLY);
     remove(wkp);
 
     //you better not have so many processes you get to 10 digits
     char in_buff[10];
-    read(fd[0], in_buff, sizeof(in_buff)-1);
+    read(fd[1], in_buff, sizeof(in_buff)-1);
 
-    fd[1] = open(in_buff, O_WRONLY);
+    fd[0] = open(in_buff, O_WRONLY);
 
     //"0" is acknoledgement code
-    write(fd[1], "0", sizeof("0"));
+    write(fd[0], "0", sizeof("0"));
 
     return 0;
 }
@@ -88,5 +88,5 @@ int establish_processer_connection(int * fd, const char * wkp) {
 void send_input(int fd, const int * input_codes) {
     int e = END;
     write(fd, input_codes, sizeof(input_codes));
-    write(fd, &e, sizeof(int));
+    write(fd, &e, sizeof(e));
 }

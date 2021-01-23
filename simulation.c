@@ -25,6 +25,9 @@ int main() {
 
     //initilzing shared memory stuff
     int shmd = shmget(KEY, 0, 0);
+
+    printf("shmd: %d\n", shmd);
+
     if(shmd == -1) {
         fprintf(stderr, "Error creating shared memory: %s\n", strerror(errno));
 
@@ -93,8 +96,7 @@ int main() {
     //program has terminated, just need to clean up
     shmdt(ents);
 
-    close(fd[0]), fd[0] = 0;
-    close(fd[1]), fd[1] = 0;
+    close(fd[0]),close(fd[1]);
 
     destroy_entll_children(unloaded);
     destroy_entll_children(loaded);

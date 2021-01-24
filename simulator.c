@@ -10,7 +10,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define MOVEMENT_EPSILON 0.01
+#define MOVEMENT_EPSILON 0.1
 
 /*
  * rounds small numbers to 0
@@ -31,8 +31,8 @@ void update_player(struct entity * ent,
         struct entll * loaded, struct entll * unloaded, 
         int * gamestate, int input_key) {
 
-    const double dacc = 0.03;
-    const double ddacc = 0.07;
+    const double dacc = 0.3;
+    const double ddacc = 0.1;
     //change  acceleration
     switch(input_key) {
         case P_UP:

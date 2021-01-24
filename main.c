@@ -1,3 +1,21 @@
+#include <unistd.h>
+#include <stdio.h>
+
+int main() {
+    int pid;
+    pid = fork();
+    if(!pid) {
+        execl("./input_reader_renderer", "input_reader_renderer", (char *) NULL);
+    }
+
+    sleep(1);
+
+    execl("./simulation", "simulation", (char *) NULL);
+
+    return 0;
+}
+
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -8,7 +26,8 @@
 #include "entity.h"
 #include "stage.h"
 #include "simulator.h"
-
+*
+//old main
 int main(int argc, const char **argv) {
 
     // Initialize SDL
@@ -79,3 +98,4 @@ int main(int argc, const char **argv) {
 
     return 0;
 }
+*/

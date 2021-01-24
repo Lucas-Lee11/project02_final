@@ -36,11 +36,8 @@ int sdlk_to_housek(SDL_Keycode sdlk) {
 }
 
 int main() {
-
     //create shared memory for entities
     int shmd = shmget(KEY, sizeof(struct entity) * MAX_ENTS, IPC_CREAT | 0640);
-
-    printf("shmd: %d\n", shmd);
 
     if(shmd == -1) {
         fprintf(stderr, "Error creating shared memory: %s\n", strerror(errno));
@@ -188,9 +185,8 @@ int main() {
                 default:
                     break;
             }
-
-            send_inputs(fd[0], pressed_buttons, NUM_INPUTS);
         }
+        send_inputs(fd[0], pressed_buttons, NUM_INPUTS);
 
         //pass frame even if there was no input
         if(!had_event) {
@@ -214,12 +210,7 @@ int main() {
             if(render_ent(renderer, texs, cur_ent, cam->x, cam->y, WINDOW_WIDTH, WINDOW_HEIGHT, TILE_SIZE) == -1) {
                 printf("there has been an error\n");
             }
-            //printf("this better not be a loop\n");
 
-            //printf("ent->x: %lf\t ent->y: %lf\t\n ent->height: %d\t ent->width: %d\n", cur_ent->x, cur_ent->y, cur_ent->height, cur_ent->width);
-            //printf("ent->type: %d\t tile: %d\n", cur_ent->type, TILE);
-            //printf("ent->rend_id: %d\t R_TILE: %d\n", cur_ent->rend_id, R_TILE);
-            //
             cur_ent++;
         }
         SDL_RenderPresent(renderer);

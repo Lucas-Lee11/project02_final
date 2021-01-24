@@ -28,8 +28,6 @@ int main() {
     //initilzing shared memory stuff
     int shmd = shmget(KEY, 0, 0);
 
-    printf("shmd: %d\n", shmd);
-
     if(shmd == -1) {
         fprintf(stderr, "Error creating shared memory: %s\n", strerror(errno));
 
@@ -88,7 +86,6 @@ int main() {
                 read(fd[1], &keycode, sizeof(int));
                 continue;
             }
-            printf("keycode: %d\n", keycode);
 
             //update first unloaded and than loaded nodes
             struct entll * cur_ent = unloaded;

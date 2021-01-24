@@ -81,12 +81,23 @@ int establish_processer_connection(int * fd, const char * wkp) {
 }
 
 /*
- * Sends formatted input codes to the given pipe 
+ * Sends formatted input code to the given pipe 
  * Returns: void
 */
 
 void send_input(int fd, const int * input_codes) {
     int e = END;
     write(fd, input_codes, sizeof(*input_codes));
+    write(fd, &e, sizeof(e));
+}
+
+/*
+ * Sends formatted input codes to the given pipe 
+ * Returns: void
+*/
+
+void send_inputs(int fd, const int * input_codes, const int num_inputs) {
+    int e = END;
+    write(fd, input_codes, sizeof(*input_codes)*num_inputs);
     write(fd, &e, sizeof(e));
 }

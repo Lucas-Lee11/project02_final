@@ -74,6 +74,7 @@ int main() {
         int keycode;
 
         read(fd[1], &keycode, sizeof(int));
+
         while(keycode != END) {
             //do processing stuff
             if(keycode == TERMINATE) {

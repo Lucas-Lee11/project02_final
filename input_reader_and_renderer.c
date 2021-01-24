@@ -149,12 +149,20 @@ int main() {
     //used to pass frames even if there was no input
     char had_event = 0;
 
+    int pressed_buttons[NUM_INPUTS];
+    int but;
+    for(but = 0; but < NUM_INPUTS; but++) {
+        pressed_buttons[but] = PASS;
+    }
+
     SDL_Event event;
     while(running) {
         had_event = 0;
         //process events
         while(SDL_PollEvent(&event)) {
             had_event = 1;
+
+            int house_key;
             switch(event.type) {
                 //quitting the game
                 case SDL_QUIT:
@@ -165,22 +173,22 @@ int main() {
 
                 //a key is pressed
                 case SDL_KEYDOWN:
-                    ;
-                    const int house_key = sdlk_to_housek(event.key.keysym.sym);
+                    house_key = sdlk_to_housek(event.key.keysym.sym);
                     if(house_key != -1) {
-                        send_input(fd[0], &house_key);
-                    } else {
-                        const int pass = PASS;
-                        send_input(fd[0], &pass);
+                        pressed_buttons[house_key] = house_key;
                     }
                     break;
-
+                case SDL_KEYUP:
+                    house_key = sdlk_to_housek(event.key.keysym.sym);
+                    if(house_key != -1) {
+                        pressed_buttons[house_key] = PASS;
+                    }
+                    break;
                 default:
-                    ;
-                    const int pass = PASS;
-                    send_input(fd[0], &pass);
                     break;
             }
+
+            send_inputs(fd[0], pressed_buttons, NUM_INPUTS);
         }
 
         //pass frame even if there was no input

@@ -16,13 +16,18 @@ enum {
     PASS,
 
     //terminate the program
-    TERMINATE
+    TERMINATE,
+
+    //num inputs
+    NUM_INPUTS
 };
 
 int init_processer_connection(int * fd, const char * wkp);
 int establish_processer_connection(int * fd, const char * wkp);
 
 void send_input(int fd , const int * input_codes);
+//very similar but for arrays
+void send_inputs(int fd , const int * input_codes, const int num_inputs);
 //not needed as it just recreates read exactly
 //void read_input(int fd, int * buff);
 

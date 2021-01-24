@@ -11,7 +11,7 @@
 */
 
 int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs, 
-        struct entity * ent, const double x_ref, const double y_ref) {
+        const struct entity * ent, const double x_ref, const double y_ref) {
 
     int out;
 

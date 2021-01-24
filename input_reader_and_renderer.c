@@ -2,6 +2,7 @@
 
 #include "input.h"
 #include "simulator.h"
+#include "rendering.h"
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -71,7 +72,7 @@ int main() {
     SDL_Window * window = NULL;
     window = SDL_CreateWindow("this is a window", 
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            640, 480,
+            WINDOW_WIDTH, WINDOW_HEIGHT,
             SDL_WINDOW_OPENGL
             );
     if(window == NULL) {
@@ -100,8 +101,47 @@ int main() {
         return 1;
     }
 
-    
+    //This is getting a bit cluttered but here is loading all textures as well
 
+    SDL_Texture * texs[NUM_TEXTS];
+    //nulls
+    texs[R_INVIS] = NULL;
+    texs[R_TILE] = NULL;
+
+    //player texture
+    SDL_Surface * p_surf = SDL_LoadBMP(PLAYER_IMG_PATH);
+    if(p_surf == NULL) {
+        fprintf(stderr, "Error loading sprite file: %s\n", SDL_GetError());
+
+        SDL_DestroyWindow(window), window = NULL;
+
+        shmdt(ents);
+        shmctl(shmd, IPC_RMID, 0);
+
+        close(fd[0]), close(fd[1]);
+
+        return 1;
+    }
+    SDL_Texture * p_tex = SDL_CreateTextureFromSurface(renderer, p_surf);
+    if(p_tex == NULL) {
+        fprintf(stderr, "Error loading sprite file: %s\n", SDL_GetError());
+
+        SDL_DestroyWindow(window), window = NULL;
+        SDL_FreeSurface(p_surf);
+
+        shmdt(ents);
+        shmctl(shmd, IPC_RMID, 0);
+
+        close(fd[0]), close(fd[1]);
+
+        return 1;
+    }
+    SDL_FreeSurface(p_surf);
+
+    texs[R_PLAYER] = p_tex;
+
+
+    //actually run the game
     char running = 1;
     SDL_Event event;
     while(running) {
@@ -132,7 +172,17 @@ int main() {
         SDL_Delay(50);
 
         //TODO render the frame from the ents list
+        const struct entity * cam = ents;
+        const struct entity * cur_ent = ents;
+        while(cur_ent->type != NULL_ENT) {
+            render_ent(renderer, texs, cur_ent, cam->x, cam->y);
+            printf("this better not be a loop\n");
+            cur_ent++;
+        }
 
+        SDL_RenderPresent(renderer);
+
+        printf("completed a render\n");
     }
 
     //terminate the program
@@ -143,6 +193,14 @@ int main() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+    int i;
+    for(i = 0; i < NUM_TEXTS; i++) {
+        if(texs[i]) {
+            SDL_DestroyTexture(texs[i]);
+            texs[i] = NULL;
+        }
+    }
 
     //close pipes
     close(fd[0]), close(fd[1]);

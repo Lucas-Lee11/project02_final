@@ -40,7 +40,7 @@ entity.o: entity.c entity.h
 stage.o: stage.c stage.h 
 	$(CC) -c stage.c $(SDL_HEADER_FLAGS)
 
-input_reader_and_renderer.o: input_reader_and_renderer.c input.h
+input_reader_and_renderer.o: input_reader_and_renderer.c input.h rendering.h
 	$(CC) -c input_reader_and_renderer.c $(SDL_HEADER_FLAGS)
 
 rendering.o: rendering.c rendering.h entity.h

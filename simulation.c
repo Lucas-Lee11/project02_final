@@ -41,7 +41,7 @@ int main() {
 
     //creating a null entity
     struct entity * null_ent = init_entity(0,0);
-    null_ent->type - NULL_ENT;
+    null_ent->type = NULL_ENT;
 
     struct entll * unloaded = init_entll(null_ent);
     struct entll * loaded = init_entll(null_ent);
@@ -54,6 +54,8 @@ int main() {
     //adding player
     struct entity * player = init_entity(PLAYER_HEIGHT, PLAYER_WIDTH);
     player->type = PLAYER;
+    player->x = 0;
+    player->y = 0;
     loaded = push(loaded, player);
     free_entity(player);
 

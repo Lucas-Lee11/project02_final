@@ -12,10 +12,9 @@ enum{MAX_ENTS=1024+1};
 enum{KEY=234980};
 
 //this is the big updater function
-//TODO finish processer and better plan, probably use array of function pointers
 void update_ent(struct entll * ent,
         struct entll * loaded, struct entll * unloaded,
-        int gamestate, int input_key
+        int * gamestate, int input_key
         );
 
 //loading tiles from a file

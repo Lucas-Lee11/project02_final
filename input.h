@@ -14,6 +14,7 @@ enum {
     P_LEFT,
     P_RIGHT,
     PASS,
+    NONE,
 
     //terminate the program
     TERMINATE,

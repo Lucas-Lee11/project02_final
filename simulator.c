@@ -10,9 +10,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define MOVEMENT_EPSILON 0.0001
-
-//TODO: THE ACTUAL GAME UPDATER FUNCTIONS GO HERE
+#define MOVEMENT_EPSILON 0.01
 
 /*
  * rounds small numbers to 0
@@ -31,10 +29,10 @@ void round_ep(double * n) {
 
 void update_player(struct entity * ent, 
         struct entll * loaded, struct entll * unloaded, 
-        int gamestate, int input_key) {
+        int * gamestate, int input_key) {
 
-    const double dacc = 0.3;
-    const double ddacc = 0.1;
+    const double dacc = 0.03;
+    const double ddacc = 0.07;
     //change  acceleration
     switch(input_key) {
         case P_UP:
@@ -52,16 +50,14 @@ void update_player(struct entity * ent,
         default:
             break;
     }
-    //update velocity and position
     ent->x_vel += ent->x_acc;
-    ent->y_vel += ent->y_acc;
     ent->x += ent->x_vel;
     ent->y += ent->y_vel;
+    ent->y_vel += ent->y_acc;
 
-    //constant slowing down so entity doesn't move forever
     ent->x_acc -= ent->x_acc * ddacc;
-    ent->y_acc -= ent->y_acc * ddacc;
     ent->x_vel -= ent->x_vel * ddacc;
+    ent->y_acc -= ent->y_acc * ddacc;
     ent->y_vel -= ent->y_vel * ddacc;
 
     //making getting to 0 if you are less than some epsilon
@@ -79,7 +75,7 @@ void update_player(struct entity * ent,
 
 void update_ent(struct entll * ent, 
         struct entll * loaded, struct entll * unloaded, 
-        int gamestate, int input_key) {
+        int * gamestate, int input_key) {
 
     switch(ent->ent.type) {
         case PLAYER:

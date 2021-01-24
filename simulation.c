@@ -83,19 +83,25 @@ int main() {
                 break;
             }
 
-            //TODO set up processor function
+            //if pass pass
+            if(keycode == PASS) {
+                read(fd[1], &keycode, sizeof(int));
+                continue;
+            }
+            printf("keycode: %d\n", keycode);
+
             //update first unloaded and than loaded nodes
             struct entll * cur_ent = unloaded;
             while(cur_ent) {
                 //process cur_ent
-                update_ent(cur_ent, loaded, unloaded, gamestate, keycode);
+                update_ent(cur_ent, loaded, unloaded, &gamestate, keycode);
 
                 cur_ent=cur_ent->next;
             }
             cur_ent = loaded;
             while(cur_ent) {
                 //process cur_ent
-                update_ent(cur_ent, loaded, unloaded, gamestate, keycode);
+                update_ent(cur_ent, loaded, unloaded, &gamestate, keycode);
 
                 cur_ent = cur_ent->next;
             }

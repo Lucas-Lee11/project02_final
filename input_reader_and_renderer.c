@@ -154,6 +154,7 @@ int main() {
     for(but = 0; but < NUM_INPUTS; but++) {
         pressed_buttons[but] = PASS;
     }
+    pressed_buttons[NONE] = NONE;
 
     SDL_Event event;
     while(running) {

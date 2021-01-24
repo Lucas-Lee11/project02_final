@@ -75,6 +75,9 @@ int main() {
 
         read(fd[1], &keycode, sizeof(int));
         while(keycode != END) {
+            //I have no idea why this is needed but I get 37s sometimes
+            printf("input_key: %d\n",keycode);
+
             //do processing stuff
             if(keycode == TERMINATE) {
                 //terminates the loop as the program should now end

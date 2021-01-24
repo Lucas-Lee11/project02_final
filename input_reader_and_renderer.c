@@ -25,6 +25,10 @@ int sdlk_to_housek(SDL_Keycode sdlk) {
         case SDLK_d:
             return P_RIGHT;
             break;
+        case SDLK_s:
+            return P_DOWN;
+        case SDLK_w:
+            return P_UP;
         default:
             return -1;
             break;
@@ -142,10 +146,15 @@ int main() {
 
     //actually run the game
     char running = 1;
+    //used to pass frames even if there was no input
+    char had_event = 0;
+
     SDL_Event event;
     while(running) {
+        had_event = 0;
         //process events
         while(SDL_PollEvent(&event)) {
+            had_event = 1;
             switch(event.type) {
                 //quitting the game
                 case SDL_QUIT:
@@ -160,13 +169,26 @@ int main() {
                     const int house_key = sdlk_to_housek(event.key.keysym.sym);
                     if(house_key != -1) {
                         send_input(fd[0], &house_key);
+                    } else {
+                        const int pass = PASS;
+                        send_input(fd[0], &pass);
                     }
                     break;
 
                 default:
+                    ;
+                    const int pass = PASS;
+                    send_input(fd[0], &pass);
                     break;
             }
         }
+
+        //pass frame even if there was no input
+        if(!had_event) {
+            const int pass = PASS;
+            send_input(fd[0], &pass);
+        }
+
         //50 ms delay which is needed for some reason
         SDL_Delay(50);
 
@@ -192,6 +214,7 @@ int main() {
             cur_ent++;
         }
         SDL_RenderPresent(renderer);
+
     }
 
     //terminate the program

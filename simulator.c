@@ -5,10 +5,72 @@
 #include "rendering.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <string.h>
 #include <errno.h>
+
+#define MOVEMENT_EPSILON 0.0001
+
 //TODO: THE ACTUAL GAME UPDATER FUNCTIONS GO HERE
+
+/*
+ * rounds small numbers to 0
+ * Returns: void
+*/
+
+void round_ep(double * n) {
+    *n = fabs(*n) < MOVEMENT_EPSILON ? 0 : *n;
+}
+
+
+/*
+ * updates position and surroundings of a player
+ * Returns: void
+*/
+
+void update_player(struct entity * ent, 
+        struct entll * loaded, struct entll * unloaded, 
+        int gamestate, int input_key) {
+
+    //printf("input_key: %d\n",input_key);
+
+    const double dacc = 0.06;
+    //change  acceleration
+    switch(input_key) {
+        case P_UP:
+            ent->y_acc += dacc;
+            break;
+        case P_DOWN:
+            ent->y_acc -= dacc;
+            break;
+        case P_RIGHT:
+            ent->x_acc += dacc;
+            break;
+        case P_LEFT:
+            ent->x_acc -= dacc;
+            break;
+        default:
+            break;
+    }
+    //update velocity and position
+    ent->x_vel += ent->x_acc;
+    ent->y_vel += ent->x_acc;
+    ent->x += ent->x_vel;
+    ent->y += ent->y_vel;
+
+    //constant slowing down so entity doesn't move forever
+    ent->x_acc -= ent->x_acc * 0.1;
+    ent->y_acc -= ent->y_acc * 0.1;
+    ent->x_vel -= ent->x_vel * 0.1;
+    ent->y_vel -= ent->y_vel * 0.1;
+
+    //making getting to 0 if you are less than some epsilon
+    round_ep(&(ent->x_acc));
+    round_ep(&(ent->y_acc));
+    round_ep(&(ent->x_vel));
+    round_ep(&(ent->y_vel));
+}
 
 /*
  * updates both the given entitiy and other entities as needed with one tick of the game
@@ -19,6 +81,15 @@
 void update_ent(struct entll * ent, 
         struct entll * loaded, struct entll * unloaded, 
         int gamestate, int input_key) {
+
+    switch(ent->ent.type) {
+        case PLAYER:
+            update_player(&(ent->ent), loaded, unloaded, gamestate, input_key);
+            break;
+        default:
+            break;
+    }
+
     return;
 }
 

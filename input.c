@@ -87,6 +87,6 @@ int establish_processer_connection(int * fd, const char * wkp) {
 
 void send_input(int fd, const int * input_codes) {
     int e = END;
-    write(fd, input_codes, sizeof(input_codes));
+    write(fd, input_codes, sizeof(*input_codes));
     write(fd, &e, sizeof(e));
 }

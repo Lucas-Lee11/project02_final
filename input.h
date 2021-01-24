@@ -13,6 +13,7 @@ enum {
     P_DOWN,
     P_LEFT,
     P_RIGHT,
+    PASS,
 
     //terminate the program
     TERMINATE

@@ -15,7 +15,7 @@ TEST_CMPNTS = stage.o main.o entity.o entll.o simulator.o
 
 INPUT_READER_RENDERER_CMPNTS = entity.o input.o entll.o simulator.o input_reader_and_renderer.o rendering.o
 
-SIMULATION_CMPNTS = entity.o input.o entll.o simulator.o  simulation.o
+SIMULATION_CMPNTS = entity.o input.o entll.o simulator.o  simulation.o rendering.o
 
 #here is everything to compile
 all: input_reader_renderer simulation
@@ -56,7 +56,7 @@ entll.o: entll.c entll.h
 simlation.o: simulation.c simulator.h input.h stage.h
 	$(CC) -c simlation.c
 
-simlator.o: simulator.c simulator.h input.h
+simlator.o: simulator.c simulator.h input.h rendering.h
 	$(CC) -c simlator.c
 
 .PHONY: run clean

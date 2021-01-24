@@ -169,17 +169,25 @@ int main() {
             }
         }
         //50 ms delay which is needed for some reason
-        SDL_Delay(50);
+        SDL_Delay(1000);
 
         //TODO render the frame from the ents list
         const struct entity * cam = ents;
         const struct entity * cur_ent = ents;
         while(cur_ent->type != NULL_ENT) {
-            render_ent(renderer, texs, cur_ent, cam->x, cam->y);
-            printf("this better not be a loop\n");
+            if(render_ent(renderer, texs, cur_ent, cam->x, cam->y) == -1) {
+                printf("there has been an error\n");
+            }
+            //printf("this better not be a loop\n");
+
+            //printf("ent->x: %lf\t ent->y: %lf\t\n ent->height: %d\t ent->width: %d\n", cur_ent->x, cur_ent->y, cur_ent->height, cur_ent->width);
+            //printf("ent->type: %d\t tile: %d\n", cur_ent->type, TILE);
+            //printf("ent->rend_id: %d\t R_TILE: %d\n", cur_ent->rend_id, R_TILE);
+
             cur_ent++;
         }
 
+        SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
 
         printf("completed a render\n");

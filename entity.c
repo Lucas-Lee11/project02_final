@@ -149,6 +149,7 @@ int render_entity(SDL_Renderer * renderer, struct stage * stage, struct entity *
 void cp_entity(struct entity * dest, const struct entity * src) {
     dest->id = src->id;
     dest->type = src->type;
+    dest->rend_id = src->rend_id;
 
     dest->x = src->x;
     dest->y = src->y;
@@ -162,6 +163,7 @@ void cp_entity(struct entity * dest, const struct entity * src) {
 
     dest->collision = src->collision;
     dest->action_state = src->action_state;
+
 }
 
 

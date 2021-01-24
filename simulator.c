@@ -2,6 +2,7 @@
 #include "input.h"
 #include "entll.h"
 #include "entity.h"
+#include "rendering.h"
 
 #include <stdio.h>
 
@@ -47,6 +48,7 @@ struct entll * load_tiles(struct entll * dest, const int height, const int width
             tmp->type = TILE;
             tmp->x = x * tile_size;
             tmp->y = y * tile_size;
+            tmp->rend_id = R_TILE;
 
             dest = push(dest, tmp);
 

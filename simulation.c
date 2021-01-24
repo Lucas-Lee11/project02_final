@@ -109,6 +109,7 @@ int main() {
         struct entity * null_ent = init_entity(0,0);
         null_ent->type = NULL_ENT;
         cp_entity(&ents[MIN(i,MAX_ENTS)], null_ent);
+        free_entity(null_ent);
     }
 
     //program has terminated, just need to clean up

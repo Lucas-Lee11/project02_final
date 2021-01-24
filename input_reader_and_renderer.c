@@ -184,9 +184,13 @@ int main() {
             //printf("ent->type: %d\t tile: %d\n", cur_ent->type, TILE);
             //printf("ent->rend_id: %d\t R_TILE: %d\n", cur_ent->rend_id, R_TILE);
 
+            SDL_Delay(200);
+
             cur_ent++;
         }
 
+        //wipe previous screen and make my own
+        SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
         SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
 

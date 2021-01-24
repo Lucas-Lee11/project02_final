@@ -29,9 +29,9 @@ int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs,
             case R_TILE:
                 SDL_SetRenderDrawColor(renderer, 0, 0, 3, 255);
 
-                printf("here\n");
-
                 SDL_Rect dstrect = {x_rel, y_rel, ent->height, ent->width};
+
+                printf("x_rel: %d   y_rel: %d\n", x_rel, y_rel);
 
                 out = SDL_RenderFillRect(renderer, &dstrect);
                 break;

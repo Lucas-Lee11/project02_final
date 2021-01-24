@@ -51,6 +51,12 @@ int main() {
     //loading tiles
     loaded = load_tiles(loaded, STAGE_HEIGHT, STAGE_WIDTH, TILE_SIZE, TEST_LEVEL_PATH);
 
+    //adding player
+    struct entity * player = init_entity(PLAYER_HEIGHT, PLAYER_WIDTH);
+    player->type = PLAYER;
+    loaded = push(loaded, player);
+    free_entity(player);
+
     //run game
     char running = 1;
     int gamestate = 0;

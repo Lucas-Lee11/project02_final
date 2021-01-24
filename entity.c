@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "entity.h"
+#include "rendering.h"
 
 
 /*
@@ -40,6 +41,7 @@ struct entity * init_entity(const int height, const int width) {
     ent->y_acc = 0;
 
     ent->type = GENERIC;
+    ent->rend_id = R_INVIS;
 
     close(fd);
 

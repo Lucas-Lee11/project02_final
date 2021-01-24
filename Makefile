@@ -13,7 +13,7 @@ endif
 #what does each of the things need to compile
 TEST_CMPNTS = stage.o main.o entity.o entll.o simulator.o
 
-INPUT_READER_RENDERER_CMPNTS = entity.o input.o entll.o simulator.o input_reader_and_renderer.o
+INPUT_READER_RENDERER_CMPNTS = entity.o input.o entll.o simulator.o input_reader_and_renderer.o rendering.o
 
 SIMULATION_CMPNTS = entity.o input.o entll.o simulator.o  simulation.o
 
@@ -43,6 +43,8 @@ stage.o: stage.c stage.h
 input_reader_and_renderer.o: input_reader_and_renderer.c input.h
 	$(CC) -c input_reader_and_renderer.c $(SDL_HEADER_FLAGS)
 
+rendering.o: rendering.c rendering.h entity.h
+	$(CC) -c rendering.c $(SDL_HEADER_FLAGS)
 
 #doesn't need sdl things
 input.o: input.c input.h

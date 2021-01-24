@@ -61,6 +61,9 @@ struct entity {
     //GROUNDED = 1;
     //AIRBORN = 2
     int action_state;
+
+    //renderer id, to be used in rendering
+    int rend_id;
 };
 
 struct entity * init_entity(const int height, const int width);

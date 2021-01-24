@@ -140,7 +140,6 @@ int main() {
 
     texs[R_PLAYER] = p_tex;
 
-
     //actually run the game
     char running = 1;
     SDL_Event event;
@@ -169,7 +168,7 @@ int main() {
             }
         }
         //50 ms delay which is needed for some reason
-        SDL_Delay(1000);
+        SDL_Delay(50);
 
         //TODO render the frame from the ents list
         //clear last screen
@@ -179,6 +178,7 @@ int main() {
 
         const struct entity * cam = ents;
         const struct entity * cur_ent = ents;
+
         while(cur_ent->type != NULL_ENT) {
             if(render_ent(renderer, texs, cur_ent, cam->x, cam->y) == -1) {
                 printf("there has been an error\n");

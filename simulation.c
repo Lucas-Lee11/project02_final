@@ -4,6 +4,7 @@
 #include "entll.h"
 #include "entity.h"
 #include "stage.h"
+#include "rendering.h"
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -51,11 +52,14 @@ int main() {
     //loading tiles
     loaded = load_tiles(loaded, STAGE_HEIGHT, STAGE_WIDTH, TILE_SIZE, TEST_LEVEL_PATH);
 
-    //adding player
+    //adding player, should make a function for this maybe
     struct entity * player = init_entity(PLAYER_HEIGHT, PLAYER_WIDTH);
     player->type = PLAYER;
+    player->rend_id = R_PLAYER;
     player->x = 0;
     player->y = 0;
+    player->width = 40;
+    player->height = 40;
     loaded = push(loaded, player);
     free_entity(player);
 

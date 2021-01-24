@@ -21,7 +21,7 @@ int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs,
     SDL_Texture * tex = texs[ent->rend_id];
 
     if(tex != NULL) {
-        SDL_Rect dstrect = {x_rel, y_rel, ent->x, ent->y};
+        SDL_Rect dstrect = {x_rel, y_rel, ent->height, ent->width};
 
         out = SDL_RenderCopy(renderer, tex, NULL, &dstrect);
     } else {

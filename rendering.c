@@ -3,6 +3,9 @@
 #include "entity.h"
 #include "rendering.h"
 
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
 /*
  * renders the entity on screen based on the entity
  * MAKE SURE THAT TEXTURES ARE BIG ENOUGH, THE SIZE OF NUM_TEXTS
@@ -11,7 +14,14 @@
 */
 
 int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs, 
-        const struct entity * ent, const double x_ref, const double y_ref) {
+        const struct entity * ent, const double x_refi, const double y_refi,
+        const int win_width, const int win_height, const int tile_size) {
+
+    int x_ref = x_refi - win_width/2;
+    int y_ref = y_refi - win_height/2;
+
+    x_ref = MIN(MAX(x_ref, 0), (win_width * tile_size) - win_width);
+    y_ref = MIN(MAX(y_ref, 0), (win_height * tile_size) - win_height);
 
     int out;
 

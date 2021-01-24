@@ -8,6 +8,8 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
+#define TILE_SIZE 64
+
 //each has a respective texture which needs to be initlized indiviually 
 enum {
     R_INVIS,
@@ -18,7 +20,8 @@ enum {
 
 //renders a texture to the screen
 int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs, 
-        const struct entity * ent, const double x_ref, const double y_ref);
+        const struct entity * ent, const double x_refi, const double y_refi,
+        const int win_width, const int win_height, const int tile_size);
 
 
 #endif

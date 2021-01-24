@@ -210,7 +210,7 @@ int main() {
         const struct entity * cur_ent = ents;
 
         while(cur_ent->type != NULL_ENT) {
-            if(render_ent(renderer, texs, cur_ent, cam->x, cam->y) == -1) {
+            if(render_ent(renderer, texs, cur_ent, cam->x, cam->y, WINDOW_WIDTH, WINDOW_HEIGHT, TILE_SIZE) == -1) {
                 printf("there has been an error\n");
             }
             //printf("this better not be a loop\n");

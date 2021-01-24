@@ -172,6 +172,11 @@ int main() {
         SDL_Delay(1000);
 
         //TODO render the frame from the ents list
+        //clear last screen
+
+        SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
+        SDL_RenderClear(renderer);
+
         const struct entity * cam = ents;
         const struct entity * cur_ent = ents;
         while(cur_ent->type != NULL_ENT) {
@@ -183,18 +188,10 @@ int main() {
             //printf("ent->x: %lf\t ent->y: %lf\t\n ent->height: %d\t ent->width: %d\n", cur_ent->x, cur_ent->y, cur_ent->height, cur_ent->width);
             //printf("ent->type: %d\t tile: %d\n", cur_ent->type, TILE);
             //printf("ent->rend_id: %d\t R_TILE: %d\n", cur_ent->rend_id, R_TILE);
-
-            SDL_Delay(200);
-
+            //
             cur_ent++;
         }
-
-        //wipe previous screen and make my own
-        SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
-        SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
-
-        printf("completed a render\n");
     }
 
     //terminate the program

@@ -43,6 +43,7 @@ struct entll * load_tiles(struct entll * dest, const int height, const int width
     for(y = 0; y < height; y++) {
         for(x = 0; x < width; x++) {
             fscanf(fp, "%d", &tile_code);
+            if(tile_code == 0) continue;
 
             struct entity * tmp = init_entity(tile_size, tile_size);
             tmp->type = TILE;

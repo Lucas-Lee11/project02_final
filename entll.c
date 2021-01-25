@@ -37,6 +37,7 @@ struct entll * destroy_entll(struct entll * to_free) {
 struct entll * destroy_entll_children(struct entll * to_free) {
     while(to_free) {
         if(to_free->next == NULL) {
+            free(to_free);
             return NULL;
         }
 

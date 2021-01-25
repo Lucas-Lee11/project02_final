@@ -127,11 +127,12 @@ void update_player(struct entity * ent,
         int * gamestate, int input_key) {
 
     const double dacc = 0.3;
-    const double ddacc = 0.1;
+    const double ddacc = 0.15;
     //change  acceleration
     switch(input_key) {
         case P_UP:
             ent->y_acc -= dacc;
+            ent->y_vel -= 1;
             break;
         case P_DOWN:
             ent->y_acc += dacc;
@@ -153,21 +154,16 @@ void update_player(struct entity * ent,
     ent->y_vel += ent->y_acc;
     ent->y += ent->y_vel;
 
-
     ent->x_acc -= ent->x_acc * ddacc;
     ent->x_vel -= ent->x_vel * ddacc;
     ent->y_acc -= ent->y_acc * ddacc;
     ent->y_vel -= ent->y_vel * ddacc;
-
-
 
     //making getting to 0 if you are less than some epsilon
     round_ep(&(ent->x_acc));
     round_ep(&(ent->y_acc));
     round_ep(&(ent->x_vel));
     round_ep(&(ent->y_vel));
-
-
 }
 
 /*

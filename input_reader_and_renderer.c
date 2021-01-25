@@ -223,7 +223,6 @@ int main() {
     //sdl stuff
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SDL_Quit();
 
     int i;
     for(i = 0; i < NUM_TEXTS; i++) {
@@ -232,6 +231,8 @@ int main() {
             texs[i] = NULL;
         }
     }
+
+    SDL_Quit();
 
     //close pipes
     close(fd[0]), close(fd[1]);

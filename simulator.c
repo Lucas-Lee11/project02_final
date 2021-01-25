@@ -10,7 +10,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define SIGN(x) (x < 0 ? -1 : 1)
+#define SIGN(x) ((x) < 0 ? -1 : 1)
 #define MOVEMENT_EPSILON 0.2
 #define COLLISION_EPSILON 0.1
 
@@ -28,40 +28,20 @@ void round_ep(double * n) {
  * detects collision between entities
  * Returns: 1 on collison 0 on not
 */
-int will_collide_x(struct entity * this, struct entity * that){
+int will_collide(struct entity * this, struct entity * that){
 
     if(this == that) return 0;
 
-    float x1_left = this->x + this->x_vel;
-    float x1_right = x1_left + this->width;
+    double x1_left = this->x + this->x_vel;
+    double x1_right = x1_left + this->width;
 
-    float x1_top = this->y;
-    float x1_bottom = this->y + this->height;
+    double x1_top = this->y + this->y_vel;
+    double x1_bottom = x1_top+ this->height;
 
-    float x2_left = that->x;
-    float x2_right = that->x + that->width;
-    float x2_top = that->y;
-    float x2_bottom = that->y + that->height;
-
-
-    if(x1_right > x2_left && x1_left < x2_right && x1_bottom > x2_top && x1_top < x2_bottom) return 1;
-    else return 0;
-}
-
-int will_collide_y(struct entity * this, struct entity * that){
-
-    if(this == that) return 0;
-
-    float x1_left = this->x;
-    float x1_right = this->x + this->width;
-
-    float x1_top = this->y + this->y_vel;
-    float x1_bottom = x1_top+ this->height;
-
-    float x2_left = that->x;
-    float x2_right = that->x + that->width;
-    float x2_top = that->y;
-    float x2_bottom = that->y + that->height;
+    double x2_left = that->x;
+    double x2_right = that->x + that->width;
+    double x2_top = that->y;
+    double x2_bottom = that->y + that->height;
 
 
     if(x1_right > x2_left && x1_left < x2_right && x1_bottom > x2_top && x1_top < x2_bottom) return 1;
@@ -70,33 +50,22 @@ int will_collide_y(struct entity * this, struct entity * that){
 
 void handle_collision(struct entity * ent, struct entll * check){
     struct entll * cur_ent = check;
-    float corr;
+    double corr_x, corr_y;
 
     while(cur_ent) {
         struct entity * other = &(cur_ent->ent);
 
-        if(will_collide_x(ent, other)){
+        if(will_collide(ent, other)){
 
-            corr = SIGN(ent->x_vel) * COLLISION_EPSILON;
-            while(will_collide_x(ent, other)){
-                printf("correcting x %f\n", ent->x);
-                ent->x -= corr;
+            corr_x = ent->x_vel * COLLISION_EPSILON;
+            corr_y = ent->y_vel * COLLISION_EPSILON;
+
+            while(will_collide(ent, other)){
+                printf("%lf %lf\n", ent->x_vel, ent->y_vel);
+                ent->x_vel -= corr_x;
+                ent->y_vel -= corr_y;
+
             }
-
-            ent->x_acc = 0;
-
-        }
-
-        if(will_collide_y(ent, other)){
-
-            corr = SIGN(ent->y_vel) * COLLISION_EPSILON;
-            while(will_collide_y(ent, other)){
-                printf("correcting y %f\n", ent->y);
-                ent->y -= corr;
-            }
-
-            ent->y_acc = 0;
-
         }
 
         cur_ent = cur_ent->next;

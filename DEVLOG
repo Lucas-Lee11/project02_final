@@ -24,3 +24,4 @@
 |jeremy|20210124|more code refactoring and got all the abstracted away input reading and rendering working|
 |lucas|20210124|fixed issue with camera going out of bounds|
 |jeremy/lucas|20210124|removed unused code|
+|jeremy/lucas|20210125|Finished collision, fixed memory leasks|

@@ -10,7 +10,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define MOVEMENT_EPSILON 0.1
+#define MOVEMENT_EPSILON 0.2
 
 /*
  * rounds small numbers to 0

@@ -2,7 +2,6 @@
 #define ENTLL_H_
 
 #include "entity.h"
-#include "stage.h"
 
 struct entll {
     struct entity ent;

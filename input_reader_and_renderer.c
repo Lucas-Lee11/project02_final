@@ -197,7 +197,6 @@ int main() {
         //50 ms delay which is needed for some reason
         SDL_Delay(50);
 
-        //TODO render the frame from the ents list
         //clear last screen
 
         SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);

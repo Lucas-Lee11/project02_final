@@ -3,7 +3,6 @@
 #include "simulator.h"
 #include "entll.h"
 #include "entity.h"
-#include "stage.h"
 #include "rendering.h"
 
 #include <sys/ipc.h>

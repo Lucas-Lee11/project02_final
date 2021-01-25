@@ -10,6 +10,9 @@
 
 #define TILE_SIZE 64
 
+#define STAGE_WIDTH 40
+#define STAGE_HEIGHT 20
+
 //each has a respective texture which needs to be initlized indiviually
 enum {
     R_INVIS,

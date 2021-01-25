@@ -1,6 +1,8 @@
 #ifndef SIMULATOR_H_
 #define SIMULATOR_H_
 
+#define TEST_LEVEL_PATH "./level1.dat"
+
 #include "entity.h"
 #include "entll.h"
 

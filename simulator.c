@@ -11,6 +11,7 @@
 #include <errno.h>
 
 #define SIGN(x) ((x) < 0 ? -1 : 1)
+#define MAX(x,y) ((x) < (y) (y) : (x))
 #define MOVEMENT_EPSILON 0.2
 #define COLLISION_EPSILON 0.1
 
@@ -28,9 +29,9 @@ void round_ep(double * n) {
  * detects collision between entities
  * Returns: 1 on collison 0 on not
 */
-void will_collide_x(struct entity * this, struct entity * that){
+int will_collide_x(struct entity * this, struct entity * that){
 
-    if(this == that) return;
+    if(this == that) return 0;
 
     double x1_left = this->x + this->x_vel;
     double x1_right = x1_left + this->width;
@@ -45,20 +46,14 @@ void will_collide_x(struct entity * this, struct entity * that){
 
 
     if(x1_right > x2_left && x1_left < x2_right && x1_bottom > x2_top && x1_top < x2_bottom){
-        if(this->x_vel > 0){
-            this->x = that->x - this->width;
-
-        }
-        else{
-            this->x = that->x + that->width;
-        }
-        this->x_vel = 0;
+        return 1;
     }
+    return 0;
 }
 
-void will_collide_y(struct entity * this, struct entity * that){
+int will_collide_y(struct entity * this, struct entity * that){
 
-    if(this == that) return;
+    if(this == that) return 0;
 
     double x1_left = this->x;
     double x1_right = x1_left + this->width;
@@ -73,14 +68,9 @@ void will_collide_y(struct entity * this, struct entity * that){
 
 
     if(x1_right > x2_left && x1_left < x2_right && x1_bottom > x2_top && x1_top < x2_bottom){
-        if(this->y_vel > 0){
-            this->y = that->y - this->height;
-        }
-        else{
-            this->y = that->y + that->height;
-        }
-        this->y_vel = 0;
+        return 1;
     }
+    return 0;
 }
 
 void handle_collision(struct entity * ent, struct entll * check){
@@ -89,8 +79,37 @@ void handle_collision(struct entity * ent, struct entll * check){
     while(cur_ent) {
         struct entity * other = &(cur_ent->ent);
 
-        will_collide_x(ent, other);
-        will_collide_y(ent, other);
+        int x_colled = will_collide_x(ent, other), y_colled = will_collide_y(ent, other);
+        double special_y_v, special_x_v;
+
+        if(x_colled) {
+            special_x_v = -(ent->x_vel * COLLISION_EPSILON);
+            ent->x_vel *= COLLISION_EPSILON;
+        }
+        if(y_colled) {
+            special_y_v = -(ent->y_vel * COLLISION_EPSILON);
+            ent->y_vel *= COLLISION_EPSILON;
+        }
+
+        x_colled = will_collide_x(ent, other), y_colled = will_collide_y(ent, other);
+
+        while(will_collide_y(ent, other) || will_collide_x(ent,other)) {
+            if(will_collide_x(ent,other)) {
+                ent->x += special_x_v;
+            }
+            if(will_collide_y(ent, other)) {
+                ent->y += special_y_v;
+            }
+        }
+
+        if(x_colled) {
+            ent->x_vel = 0;
+            ent->x_acc = 0;
+        }
+        if(y_colled) {
+            ent->y_vel = 0;
+            ent->y_acc = 0;
+        }
 
         cur_ent = cur_ent->next;
     }

@@ -1,26 +1,4 @@
-# Project Icarus
-
-Names: Jeremy Ku-Benjet, Lucas Lee
-Period: 10
-
-## Description
-The project is a renderer and processer for use in making a game, built off of SDL. It also has a little demo (opposed to a big demo to show off all the capabilities because time constraints and we are slow).
-
-### Required Libraries
-- SDL2
-```
-sudo apt-get install libsdl2-dev
-```
-### Usage
-to run the game
-```
-make ; make run
-```
-A: move left
-D: move right
-SPACE: jump
-
-## Devlog (README version)
+# Devlog
 |Person|Date|Description|
 |------|----|-----------|
 |jeremy|20210110|drafted proposol|
@@ -46,11 +24,3 @@ SPACE: jump
 |jeremy|20210124|more code refactoring and got all the abstracted away input reading and rendering working|
 |lucas|20210124|fixed issue with camera going out of bounds|
 |jeremy/lucas|20210124|removed unused code|
-
-## Timeline
-- [x] Proposal 1/11
-- [x] Entity struct 1/13
-- [x] Basic rendering of sprite 1/15
-- [x] User input, placeholder processor 1/19
-- [x] Processor finished 1/21
-- [ ] Levels and bug testing 1/25

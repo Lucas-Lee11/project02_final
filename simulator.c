@@ -28,11 +28,39 @@ void round_ep(double * n) {
  * detects collision between entities
  * Returns: 1 on collison 0 on not
 */
-int will_collide(struct entity * this, struct entity * that){
+void will_collide_x(struct entity * this, struct entity * that){
 
-    if(this == that) return 0;
+    if(this == that) return;
 
     double x1_left = this->x + this->x_vel;
+    double x1_right = x1_left + this->width;
+
+    double x1_top = this->y;
+    double x1_bottom = x1_top+ this->height;
+
+    double x2_left = that->x;
+    double x2_right = that->x + that->width;
+    double x2_top = that->y;
+    double x2_bottom = that->y + that->height;
+
+
+    if(x1_right > x2_left && x1_left < x2_right && x1_bottom > x2_top && x1_top < x2_bottom){
+        if(this->x_vel > 0){
+            this->x = that->x - this->width;
+
+        }
+        else{
+            this->x = that->x + that->width;
+        }
+        this->x_vel = 0;
+    }
+}
+
+void will_collide_y(struct entity * this, struct entity * that){
+
+    if(this == that) return;
+
+    double x1_left = this->x;
     double x1_right = x1_left + this->width;
 
     double x1_top = this->y + this->y_vel;
@@ -44,29 +72,25 @@ int will_collide(struct entity * this, struct entity * that){
     double x2_bottom = that->y + that->height;
 
 
-    if(x1_right > x2_left && x1_left < x2_right && x1_bottom > x2_top && x1_top < x2_bottom) return 1;
-    else return 0;
+    if(x1_right > x2_left && x1_left < x2_right && x1_bottom > x2_top && x1_top < x2_bottom){
+        if(this->y_vel > 0){
+            this->y = that->y - this->height;
+        }
+        else{
+            this->y = that->y + that->height;
+        }
+        this->y_vel = 0;
+    }
 }
 
 void handle_collision(struct entity * ent, struct entll * check){
     struct entll * cur_ent = check;
-    double corr_x, corr_y;
 
     while(cur_ent) {
         struct entity * other = &(cur_ent->ent);
 
-        if(will_collide(ent, other)){
-
-            corr_x = ent->x_vel * COLLISION_EPSILON;
-            corr_y = ent->y_vel * COLLISION_EPSILON;
-
-            while(will_collide(ent, other)){
-                printf("%lf %lf\n", ent->x_vel, ent->y_vel);
-                ent->x_vel -= corr_x;
-                ent->y_vel -= corr_y;
-
-            }
-        }
+        will_collide_x(ent, other);
+        will_collide_y(ent, other);
 
         cur_ent = cur_ent->next;
     }

@@ -71,7 +71,7 @@ int main() {
 
     //create the window
     SDL_Window * window = NULL;
-    window = SDL_CreateWindow("this is a window", 
+    window = SDL_CreateWindow("this is a window",
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
             WINDOW_WIDTH, WINDOW_HEIGHT,
             SDL_WINDOW_OPENGL
@@ -86,7 +86,7 @@ int main() {
         return 1;
     }
 
-    //creates renderer form the window 
+    //creates renderer form the window
     SDL_Renderer * renderer = NULL;
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if(renderer == NULL) {
@@ -207,7 +207,7 @@ int main() {
         const struct entity * cur_ent = ents;
 
         while(cur_ent->type != NULL_ENT) {
-            if(render_ent(renderer, texs, cur_ent, cam->x, cam->y, WINDOW_WIDTH, WINDOW_HEIGHT, TILE_SIZE) == -1) {
+            if(render_ent(renderer, texs, cur_ent, cam->x, cam->y, WINDOW_WIDTH, WINDOW_HEIGHT, STAGE_WIDTH, STAGE_HEIGHT, TILE_SIZE) == -1) {
                 printf("there has been an error\n");
             }
 

@@ -13,15 +13,17 @@
  * Returns: 0 on success else -1
 */
 
-int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs, 
+int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs,
         const struct entity * ent, const double x_refi, const double y_refi,
-        const int win_width, const int win_height, const int tile_size) {
+        const int win_width, const int win_height,
+        const int stage_width, const int stage_height,
+        const int tile_size) {
 
     int x_ref = x_refi - win_width/2;
     int y_ref = y_refi - win_height/2;
 
-    x_ref = MIN(MAX(x_ref, 0), (win_width * tile_size) - win_width);
-    y_ref = MIN(MAX(y_ref, 0), (win_height * tile_size) - win_height);
+    x_ref = MIN(MAX(x_ref, 0), (stage_width * tile_size) - win_width);
+    y_ref = MIN(MAX(y_ref, 0), (stage_height * tile_size) - win_height);
 
     int out;
 

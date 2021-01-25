@@ -10,7 +10,7 @@
 
 #define TILE_SIZE 64
 
-//each has a respective texture which needs to be initlized indiviually 
+//each has a respective texture which needs to be initlized indiviually
 enum {
     R_INVIS,
     R_PLAYER,
@@ -19,9 +19,11 @@ enum {
 };
 
 //renders a texture to the screen
-int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs, 
+int render_ent(SDL_Renderer * renderer, SDL_Texture ** texs,
         const struct entity * ent, const double x_refi, const double y_refi,
-        const int win_width, const int win_height, const int tile_size);
+        const int win_width, const int win_height,
+        const int stage_width, const int stage_height,
+        const int tile_size);
 
 
 #endif

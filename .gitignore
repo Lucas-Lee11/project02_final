@@ -1,3 +1,5 @@
 *.o
 .DS_Store
-prgrm
+input_reader_renderer
+main
+simulation

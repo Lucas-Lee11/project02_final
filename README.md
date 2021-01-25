@@ -16,9 +16,7 @@ to run the game
 ```
 make ; make run
 ```
-A: move left
-D: move right
-SPACE: jump
+WASD: move in the direction those keys seem to put you in
 
 ## Devlog (README version)
 |Person|Date|Description|
